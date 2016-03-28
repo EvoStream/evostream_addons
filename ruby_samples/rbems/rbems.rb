@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.dirname(__FILE__)
-#$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)))
+
 #
 # EvoStream Media Server Extensions
 # EvoStream, Inc.

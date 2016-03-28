@@ -43,7 +43,7 @@ rbems is an app for demonstrating basic streaming functionality of EMS
 
   https://github.com/EvoStream/evostream_addons/tree/master/ruby_samples/rbems
 
-- Tweaks in src/rbems/constants.rb
+- Tweaks in rbems/constants.rb
 
   - TRACE adjusts the console output for debugging
   - URIS_LIVE sets the source stream URI

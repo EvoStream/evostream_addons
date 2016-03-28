@@ -19,9 +19,16 @@ module Rbems
     url = "http://#{EMS_IP}:#{EMS_CLI_PORT}/#{cmd}?params=#{params}"
     puts "Sent via HTTP '#{url}'" if TRACE > 1
     text = `curl -s #{url}`
-    json = JSON.parse(text)
-    puts "Received from EMS:" if TRACE > 0
-    puts text if TRACE == 1
-    puts JSON.pretty_generate(json) if TRACE > 1
+    json = {}
+    begin
+      json = JSON.parse(text)
+      puts "Received from EMS:" if TRACE > 0
+      puts text if TRACE == 1
+      puts JSON.pretty_generate(json) if TRACE > 1
+    rescue Exception => ex
+      puts "Error: #{ex.message}" if TRACE > 1
+      puts "No response from EMS! Please check if the EMS at #{EMS_IP} is running!"
+    end
+    json
   end
 end

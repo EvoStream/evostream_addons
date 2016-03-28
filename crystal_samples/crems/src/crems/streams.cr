@@ -42,7 +42,7 @@ module Crems
     `killall -9 #{AVCONV_BIN} 2> /dev/null`
     found = File.exists? file_image
     puts `ls -al #{file_image}` if found && TRACE > 1
-    puts "Key frame found after #{wait_time} sec" if TRACE > 0
+    puts "Key frame found after #{wait_time} sec" if found && TRACE > 0
     return found ? wait_time : 0
   end
 end
