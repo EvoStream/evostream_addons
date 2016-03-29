@@ -11,22 +11,8 @@
 
 require 'rubygems'
 
-def osIsWindows
-  /mingw/ =~ Gem::Platform.local.os
-end
-
-require 'Win32API' if osIsWindows
-require 'win32ole' if osIsWindows
-
 module Utils
 
-if osIsWindows
-  # read one char w/o enter nor echo
-  def get_key
-    key = Win32API.new('crtdll','_getch', [], 'L').call
-    key.chr
-  end
-else
   # read one char w/o enter nor echo
   def get_key
     begin
@@ -55,6 +41,5 @@ else
     end
     return c
   end
-end
 
 end

@@ -162,8 +162,8 @@ def showSettings
   puts "TEST SETTINGS:"
   puts "SAMPLE_PERIOD = #{SAMPLE_PERIOD}"
   puts "RAMP_STEPS = #{RAMP_STEPS}"
-  puts "RAMP_PULL_COUNT = #{RAMP_PULL_COUNT}"
-  puts "RAMP_STEP_DELAY = #{RAMP_STEP_DELAY}"
+  puts "RAMP_PULL_COUNT = #{RAMP_PULL_COUNT}        (MAX_STREAMS = #{RAMP_STEPS * RAMP_PULL_COUNT})"
+  puts "RAMP_STEP_DELAY = #{RAMP_STEP_DELAY}        (MAX_DURATION = #{(RAMP_STEPS * 2 + RAMP_PEAK_TIMES) * RAMP_STEP_DELAY} sec)"
   puts "RAMP_PEAK_TIMES = #{RAMP_PEAK_TIMES}"
   puts "RECORD_PATH = #{RECORD_PATH}"
   puts "RECORD_TYPE = #{RECORD_TYPE}"
@@ -176,7 +176,7 @@ begin
   puts
   puts "-----Begin [#{LOCAL_IP}]-----"
   Ems.initialize({"target_dir" => TARGET_DIR, "record_path" => RECORD_PATH})
-  Telnet.open("")
+  Telnet.open(LOCAL_IP)
   raise "error opening telnet" if (Telnet.host == nil)
   key = ' '
   begin

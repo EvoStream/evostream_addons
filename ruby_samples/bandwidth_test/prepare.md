@@ -77,6 +77,7 @@ This part is only required for setup / preparation of the bandwidth test tool.
    4. *RAMP_STEPS* = number of steps to ramp up/down (see calculations below)
    5. *RAMP_PULL_COUNT* = number of additional streams to pull per step (see calculations below)
    6. *RAMP_STEP_DELAY* = delay in seconds between steps
+   7. *RAMP_PEAK_TIMES* = number of delay loops after ramp-up before ramp-down
 
    Note: Other settings that can limit RTMP performance for Linux:
    ```bash
@@ -103,4 +104,14 @@ This part is only required for setup / preparation of the bandwidth test tool.
    Maximum_Bandwidth = 80 x 1.165 megabits/sec = 93.2 megabits/sec
    ```
    Ramping up further would saturate a 100-baseT network, but would use only around 10% of a gigabit network's bandwidth.
+
+   The maximum duration will be:
+   ```
+   Maximum_Duration = (RAMP_STEPS x 2 + RAMP_PEAK_TIMES) x RAMP_STEP_DELAY
+   ```
+   For, with *RAMP_STEPS* = 10, *RAMP_PEAK_TIMES* = 5 and *RAMP_STEP_DELAY* = 20
+   ```
+   Maximum_Duration = (10 x 2 + 5) x 20 = 500 seconds
+   ```
+   The pulled stream should be longer than this to be able to ramp-up and ramp-down smoothly at the expected bandwidth.
 
