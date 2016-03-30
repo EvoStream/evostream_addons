@@ -64,7 +64,7 @@ def getStreamCountAtPort(port)
   count = `netstat -tan|grep ESTABLISHED|grep :#{port}|wc -l`.strip.to_i
 end
 
-def rampRecordTest
+def rampTest
   puts "-- ramp started --"
   @stopRamp = false
   # ramp up
@@ -207,7 +207,7 @@ begin
         Ems.record(Telnet.host, IN_STREAM_NAME, RECORD_PATH, RECORD_TYPE)
       when '3'
         if (@threadRamp == nil)
-          @threadRamp = Thread.new { rampRecordTest }
+          @threadRamp = Thread.new { rampTest }
         else
           stopRamp
         end

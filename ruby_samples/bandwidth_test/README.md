@@ -1,6 +1,4 @@
-# RTMP RAMP TEST
-
-## DESCRIPTION
+# BANDWIDTH TEST
 
 This bandwidth test tool uses an EMS client to pull multiple streams from an EMS server.
 Statistics are gathered at the server while the client ramps up/down the number of streams pulled from the server.
@@ -57,4 +55,20 @@ C. SERVER SIDE
    2. Press [x] to exit.
 
    3. Get the results from file `rtmp-##########.csv` where `##########` is the timestamp.
+
+## Contributing
+
+1. Fork it ( https://github.com/EvoStream/evostream_addons/fork )
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create a new Pull Request
+
+## Contributors
+
+- [EvoStream](https://github.com/EvoStream)  - creator, maintainer
+
+## License
+
+- [MIT](LICENSE.md)
 
