@@ -48,7 +48,7 @@ OUT_URI = "rtmp://#{REMOTE_IP}/live"
 OUT_STREAM_NAME = "test"
 # stream sources
 IN_URI_RAMP = "rtmp://#{REMOTE_IP}/live/#{IN_STREAM_NAME}"
-IN_URI = "rtmp://localhost/vod/sintel-1h-720p.mp4"
+IN_URI = "rtmp://localhost/vod/sintel1h720p.mp4"
 # record settings
 TARGET_DIR = "/tmp"
 RECORD_PATH = "/tmp/record"

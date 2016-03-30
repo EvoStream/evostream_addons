@@ -1,4 +1,4 @@
-# PREPARE FOR RTMP RAMP TEST
+# PREPARE FOR BANDWIDTH TEST
 
 This part is only required for setup / preparation of the bandwidth test tool.
 
@@ -42,43 +42,52 @@ This part is only required for setup / preparation of the bandwidth test tool.
 ### SERVER SIDE
 
    1. If the EMS is not running at the server, start it.
-   2. Copy a 1-minute video, `sintel-1m-720p.mp4`, and 2 text files from the GitHub:
+
+   2. Copy a 1-minute video, `sintel1m720p.mp4`, and 2 text files from the GitHub:
 
       ```bash
-      $ wget http://docs.evostream.com/sample_content/assets/sintel-1m-720p.mp4
-      $ wget http://docs.evostream.com/sample_content/assets/sintel-1h.sh
-      $ wget http://docs.evostream.com/sample_content/assets/sintel-1h.list
+      $ wget http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4
+      $ wget http://docs.evostream.com/sample_content/assets/sintel1h.sh
+      $ wget http://docs.evostream.com/sample_content/assets/sintel1h.list
       ```
 
-   3. Run the script `sintel-1h.sh` to create a 1-hour video, `sintel-1h-720p.mp4`.
+   3. Install `ffmpeg` if required
 
       ```bash
-      $ sh sintel-1h.sh
+      $ sudo apt-add-repository ppa:mc3man/trusty-media
+      $ sudo apt-get update
+      $ sudo apt-get install ffmpeg
       ```
 
-   4. Move the 1-hour video, `sintel-1h-720p.mp4`, to the EMS media folder:
+   4. Run the script `sintel1h.sh` to create a 1-hour video, `sintel1h720p.mp4`.
 
       ```bash
-      $ sudo mv sintel-1h-720p.mp4 /var/evostreamms/media
+      $ sh sintel1h.sh
       ```
 
-   5. Change ownership and permissions to allow MP4 playback:
+   5. Move the 1-hour video, `sintel1h720p.mp4`, to the EMS media folder:
+
+      ```bash
+      $ sudo mv sintel1h720p.mp4 /var/evostreamms/media
+      ```
+
+   6. Change ownership and permissions to allow MP4 playback:
 
       ```bash
       $ cd /var/evostreamms/media
-      $ sudo chown evostreamd:evostreamd sintel-1h-720p.mp4
-      $ sudo chmod a+r sintel-1h-720p.mp4
+      $ sudo chown evostreamd:evostreamd sintel1h720p.mp4
+      $ sudo chmod a+r sintel1h720p.mp4
       ```
 
-   6. Test the playability of the MP4 test file, typically:
+   7. Test the playability of the MP4 test file, typically:
 
       ```bash
-      $ ffplay rtmp://<ems_ip>/live/sintel-1h-720p.mp4
+      $ ffplay rtmp://<ems_ip>/vod/sintel1h720p.mp4
       ```
 
       Alternatively, use VLC, JWPlayer or some other Flash player to play it back.
 
-   7. If the MP4 test file is not playable, review steps A-3 and B-5.
+   8. If the MP4 test file is not playable, review steps A-3 and B-6.
    
   
 ## C. SETUP PARAMETERS
@@ -88,7 +97,7 @@ This part is only required for setup / preparation of the bandwidth test tool.
    1. *REMOTE_IP* = partner IP address
    2. *IN_URI* = source URI for pullstream
 
-      The sample video, `sintel-1h-720p.mp4`, has a bandwidth of `1.165 megabites/sec`.
+      The sample video, `sintel1h720p.mp4`, has a bandwidth of `1.165 megabites/sec`.
 
    3. *IN_STREAM_NAME* = localstreamname for pullstream
 
