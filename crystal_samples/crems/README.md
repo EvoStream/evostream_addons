@@ -1,6 +1,6 @@
 # crems
 
-crems is an app for demonstrating basic streaming functionality of EMS
+**crems** is an app for demonstrating basic streaming functionality of the EMS. The demo app checks the EMS version, pulls a live stream, checks the pulled stream for liveness, plays the pulled stream for a fixed duration, lists streams, shuts down the pulled stream, then lists streams again.
 
 ## Installation
 
@@ -30,6 +30,35 @@ crems is an app for demonstrating basic streaming functionality of EMS
 
    ```bash
    $ crystal src/crems.cr
+   ```
+
+   Typical output:
+
+   ```
+   crems version 0.1.0
+   Send to EMS 'version'
+   Received from EMS:
+   {"data":{"banner":"EvoStream Media Server (www.evostream.com) version 1.7.0 build 4283 with hash: 395ff5e220ea7311adf3fca70960fb30c7785d34 - PacMan|m| - (built for Ubuntu-14.04-x86_64 on 2016-01-27T10:00:15.000)","branchName":"","buildDate":"2016-01-27T10:00:15.000","buildNumber":"4283","codeName":"PacMan|m|","hash":"395ff5e220ea7311adf3fca70960fb30c7785d34","releaseNumber":"1.7.0"},"description":"Version","status":"SUCCESS"}
+
+   Send to EMS 'pullstream uri=rtmp://streaming.cityofboston.gov/live/cable localstreamname=mystream'
+   Received from EMS:
+   {"data":{"audioCodecBytes":"","configId":1,"emulateUserAgent":"EvoStream Media Server (www.evostream.com) player","forceTcp":false,"httpProxy":"","isAudio":true,"keepAlive":true,"localStreamName":"mystream","operationType":1,"pageUrl":"","ppsBytes":"","rangeEnd":-1,"rangeStart":-2,"rtcpDetectionInterval":10,"sendRenewStream":false,"spsBytes":"","ssmIp":"","swfUrl":"","tcUrl":"","tos":256,"ttl":256,"uri":{"document":"cable","documentPath":"\/live\/","documentWithFullParameters":"cable","fullDocumentPath":"\/live\/cable","fullDocumentPathWithParameters":"\/live\/cable","fullParameters":"","fullUri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","fullUriWithAuth":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","host":"streaming.cityofboston.gov","ip":"140.241.251.94","originalUri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","parameters":{},"password":"","port":1935,"portSpecified":false,"scheme":"rtmp","userName":""}},"description":"Stream rtmp:\/\/streaming.cityofboston.gov\/live\/cable enqueued for pulling","status":"SUCCESS"}
+
+   Check stream 'rtmp://localhost/live/mystream'
+   Key frame found after 9 sec
+   Play stream 'rtmp://localhost/live/mystream' for 20 seconds
+
+   Send to EMS 'liststreams'
+   Received from EMS:
+   {"data":[{"appName":"evostreamms","audio":{"bytesCount":400005,"codec":"AAAC","codecNumeric":4702111241970122752,"droppedBytesCount":0,"droppedPacketsCount":0,"packetsCount":1167},"bandwidth":0,"connectionType":1,"creationTimestamp":1460353344514.9880,"edgePid":0,"farIp":"140.241.251.94","farPort":1935,"ip":"192.168.2.121","name":"mystream","nearIp":"192.168.2.121","nearPort":34012,"outStreamsUniqueIds":null,"pageUrl":"","port":34012,"processId":3868,"processType":"origin","pullSettings":{"_callback":null,"audioCodecBytes":"","configId":1,"emulateUserAgent":"EvoStream Media Server (www.evostream.com) player","forceTcp":false,"httpProxy":"","isAudio":true,"keepAlive":true,"localStreamName":"mystream","operationType":1,"pageUrl":"","ppsBytes":"","rangeEnd":-1,"rangeStart":-2,"rtcpDetectionInterval":10,"sendRenewStream":false,"spsBytes":"","ssmIp":"","swfUrl":"","tcUrl":"","tos":256,"ttl":256,"uri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable"},"queryTimestamp":1460353371669.9031,"serverAgent":"FMS\/3,5,7,7009","swfUrl":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","tcUrl":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","type":"INR","typeNumeric":5282249572905648128,"uniqueId":2,"upTime":27154.9150,"video":{"bytesCount":2923547,"codec":"VH264","codecNumeric":6217274493967007744,"droppedBytesCount":0,"droppedPacketsCount":0,"height":480,"level":30,"packetsCount":1325,"profile":77,"width":720}}],"description":"Available streams","status":"SUCCESS"}
+
+   Send to EMS 'shutdownstream localstreamname=mystream permanently=1'
+   Received from EMS:
+   {"data":{"protocolStackInfo":{"carrier":{"farIP":"140.241.251.94","farPort":1935,"id":30,"nearIP":"192.168.2.121","nearPort":34012,"rx":3346644,"tx":3589,"type":"IOHT_TCP_CARRIER"},"stack":[{"applicationId":0,"creationTimestamp":1460353343803.4780,"id":28,"isEnqueueForDelete":false,"queryTimestamp":1460353371690.6350,"type":"TCP"},{"applicationId":1,"creationTimestamp":1460353343803.5171,"id":29,"isEnqueueForDelete":false,"queryTimestamp":1460353371690.6499,"rxInvokes":62,"serverAgent":"FMS\/3,5,7,7009","streams":[{"appName":"evostreamms","audio":{"bytesCount":400005,"codec":"AAAC","codecNumeric":4702111241970122752,"droppedBytesCount":0,"droppedPacketsCount":0,"packetsCount":1167},"bandwidth":0,"connectionType":1,"creationTimestamp":1460353344514.9880,"farIp":"140.241.251.94","farPort":1935,"ip":"192.168.2.121","name":"mystream","nearIp":"192.168.2.121","nearPort":34012,"outStreamsUniqueIds":null,"pageUrl":"","port":34012,"processId":3868,"processType":"origin","pullSettings":{"audioCodecBytes":"","configId":1,"emulateUserAgent":"EvoStream Media Server (www.evostream.com) player","forceTcp":false,"httpProxy":"","isAudio":true,"keepAlive":true,"localStreamName":"mystream","operationType":1,"pageUrl":"","ppsBytes":"","rangeEnd":-1,"rangeStart":-2,"rtcpDetectionInterval":10,"sendRenewStream":false,"spsBytes":"","ssmIp":"","swfUrl":"","tcUrl":"","tos":256,"ttl":256,"uri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable"},"queryTimestamp":1460353371690.7180,"serverAgent":"FMS\/3,5,7,7009","swfUrl":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","tcUrl":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","type":"INR","typeNumeric":5282249572905648128,"uniqueId":2,"upTime":27175.7300,"video":{"bytesCount":2923547,"codec":"VH264","codecNumeric":6217274493967007744,"droppedBytesCount":0,"droppedPacketsCount":0,"height":480,"level":30,"packetsCount":1325,"profile":77,"width":720}}],"txInvokes":6,"type":"OR"}]},"streamInfo":{"appName":"evostreamms","audio":{"bytesCount":400005,"codec":"AAAC","codecNumeric":4702111241970122752,"droppedBytesCount":0,"droppedPacketsCount":0,"packetsCount":1167},"bandwidth":0,"connectionType":1,"creationTimestamp":1460353344514.9880,"farIp":"140.241.251.94","farPort":1935,"ip":"192.168.2.121","name":"mystream","nearIp":"192.168.2.121","nearPort":34012,"outStreamsUniqueIds":null,"pageUrl":"","port":34012,"processId":3868,"processType":"origin","pullSettings":{"audioCodecBytes":"","configId":1,"emulateUserAgent":"EvoStream Media Server (www.evostream.com) player","forceTcp":false,"httpProxy":"","isAudio":true,"keepAlive":true,"localStreamName":"mystream","operationType":1,"pageUrl":"","ppsBytes":"","rangeEnd":-1,"rangeStart":-2,"rtcpDetectionInterval":10,"sendRenewStream":false,"spsBytes":"","ssmIp":"","swfUrl":"","tcUrl":"","tos":256,"ttl":256,"uri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable"},"queryTimestamp":1460353371690.9749,"serverAgent":"FMS\/3,5,7,7009","swfUrl":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","tcUrl":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","type":"INR","typeNumeric":5282249572905648128,"uniqueId":2,"upTime":27175.9868,"video":{"bytesCount":2923547,"codec":"VH264","codecNumeric":6217274493967007744,"droppedBytesCount":0,"droppedPacketsCount":0,"height":480,"level":30,"packetsCount":1325,"profile":77,"width":720}}},"description":"Stream closed","status":"SUCCESS"}
+
+   Send to EMS 'liststreams'
+   Received from EMS:
+   {"data":null,"description":"Available streams","status":"SUCCESS"}
    ```
 
 ## Development
