@@ -3,14 +3,35 @@
 
 ## Overview
 
-This folder provides a colleciton of BASH scripts that call the EMS API and control the streaming behavior of the video streaming during runtime.  These scripts can be used on embedded devices such as security cameras, action cams, or wearables, or can be used on servers to provide discrete functional scripts for server management.
+It is possible to access the [EMS APIs] (http://docs.evostream.com/ems_api_definition/table_of_contents) via a BASH script.  This is made possible using the "netcat" or "nc" tool.
+Here's an example of how to do this:
+
+> echo "**EMS_API_COMMAND**" | nc **EMS_Address** **1112**
+>
+> where:
+> * **EMS_API_COMMAND** is the ASCII CLI format of the EMS Command that you wish to issue.
+> * **EMS_Address** is the IP Address of the EMS instance.  If you are running the script on the same machine as EMS, **EMS_Address** shall be **localhost**.
+> * You may use port **1112** or **1222**.  
+
+Here's an example:
+
+> echo "pullstream uri=rtmp://localhost/vod/NameOfFile.mp4 localstreamname=SomeTempName" | nc localhost 1112
+
+### Output
+Note that there will only be output if the command has failed.  There is no output for successful commands.
+You'll need to consider this when you want to add error handling on your BASH scripts.
+
+Also, output format depends on the port that you used.  If you used port 1222, the output you will receive will be in regular telnet format.  If you used port 1112, the output you'll receive will be in JSON format.
 
 
 ## The Scripts
 
+This folder provides a colleciton of BASH scripts that call the EMS API and control the streaming behavior of the video streaming during runtime.  These scripts can be used on embedded devices such as security cameras, action cams, or wearables, or can be used on servers to provide discrete functional scripts for server management.
+
+
 ### SimpleScripting.sh
 
-This script provides some examples of some basic bash scripting techniques
+This script contains sample netcat calls for accessing the EMS API.  You may use this as a template for building more complex scripts.
 
 ### BlockTranscode.sh
 
