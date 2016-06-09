@@ -17,11 +17,7 @@ Here's an example:
 
 > echo "pullstream uri=rtmp://localhost/vod/NameOfFile.mp4 localstreamname=SomeTempName" | nc localhost 1112
 
-### Output
-Note that there will only be output if the command has failed.  There is no output for successful commands.
-You'll need to consider this when you want to add error handling on your BASH scripts.
 
-Also, output format depends on the port that you used.  If you used port 1222, the output you will receive will be in regular telnet format.  If you used port 1112, the output you'll receive will be in JSON format.
 
 
 ## The Scripts
