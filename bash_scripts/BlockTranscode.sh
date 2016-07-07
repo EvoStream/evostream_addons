@@ -28,7 +28,7 @@ iplist[Stream5]=225.0.0.5
 broadcaster=192.168.5.5
 
 #Build the transcode parameters
-sourceip=1234
+sourceport=1234
 profile=veryfast
 vbitrate=750k
 abitrate=64k
@@ -43,7 +43,7 @@ do
 	streamname=$i
 	source=${iplist[$i]}
 	echo Starting transcode for stream $streamname at address $source
-	command="transcode source=udp://$source:$sourceip destinations=$streamname groupname=$groupname videoBitrates=$vbitrate videoAdvancedParamsProfiles=$profile audioBitrates=$abitrate"
+	command="transcode source=udp://$source:$sourceport destinations=$streamname groupname=$groupname videoBitrates=$vbitrate videoAdvancedParamsProfiles=$profile audioBitrates=$abitrate"
 	
 	echo $command
 	echo $command | nc localhost 1112
