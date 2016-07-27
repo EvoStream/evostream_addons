@@ -181,10 +181,11 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
+	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_ubuntu1404/initialize.sh"
           ]
         },
         "protectedSettings": {
-          "commandToExecute": ""
+          "commandToExecute": "[concat('sh initialize.sh ', parameters('adminPassword'))]"
         }
       }
     }
