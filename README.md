@@ -20,3 +20,7 @@ The **bash_scripts** folder provides a colleciton of BASH scripts that call the 
 ## Ruby Samples
 
 The **ruby_samples** directory contains a collection of stress tests and server statistic gathering tools written in Ruby.  EvoStream uses these in tests in their QA but they can be useful in stress testing streaming platforms in general.
+
+## Azure Templates
+
+The **azure_templates** directory contains sample templates for deploying Azure VMs for EMS on various platforms.
