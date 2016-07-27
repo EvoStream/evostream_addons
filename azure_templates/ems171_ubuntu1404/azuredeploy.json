@@ -31,7 +31,8 @@
   "variables": {
     "imagePublisher": "evostream-inc",
     "imageOffer": "evostream-media-server",
-    "imageSku": "1.02",
+    "imageSku": "ems-1_7_1-ubuntu-14_04",
+    "imageVersion": "1.02",
     "OSDiskName": "ems171osdisk",
     "nicName": "ems171nic",
     "addressPrefix": "10.0.0.0/16",
@@ -140,7 +141,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[variables('imageSku')]",
-            "version": "latest"
+            "version": "[variables('imageVersion')]"
           },
           "osDisk": {
             "name": "osdisk",
