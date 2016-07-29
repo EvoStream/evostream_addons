@@ -186,11 +186,11 @@
         "typeHandlerVersion": "1.7",
         "settings": {
           "fileUris": [
-	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows/initialize.bat"
+	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows/initialize.rb"
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('initialize.bat ', parameters('adminPassword'))]"
+          "commandToExecute": "[concat('ruby initialize.rb ', parameters('adminUsername'), ' > temp.txt')]"
         }
       }
     }
