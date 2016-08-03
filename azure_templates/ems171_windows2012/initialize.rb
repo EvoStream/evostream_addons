@@ -16,3 +16,4 @@ end
 end
 
 File.delete "C:\\EvoStream\\config\\pushPullSetup.xml"
+puts `ruby activate.rb`
