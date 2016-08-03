@@ -32,7 +32,7 @@
     "imagePublisher": "evostream-inc",
     "imageOffer": "evostream-media-server",
     "imageSku": "ems-1_7_1-windows",
-    "imageVersion": "1.0.0",
+    "imageVersion": "1.0.1",
     "OSDiskName": "ems171osdisk",
     "nicName": "ems171nic",
     "addressPrefix": "10.0.0.0/16",
