@@ -6,14 +6,5 @@
 #
 # This user script runs on VM creation
 #
-
-ARGV.each do |arg|
-  puts arg
-end
-
-10.times do |i|
-  puts i
-end
-
-File.delete "C:\\EvoStream\\config\\pushPullSetup.xml"
-puts `ruby activate.rb`
+del "C:\\EvoStream\\config\\pushPullSetup.xml"
+ruby activate.rb

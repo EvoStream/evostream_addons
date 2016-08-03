@@ -186,12 +186,12 @@
         "typeHandlerVersion": "1.7",
         "settings": {
           "fileUris": [
-	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows2012/initialize.rb",
+	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows2012/initialize.ps1",
 	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows2012/activate.rb"
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('ruby initialize.rb ', parameters('adminUsername'), ' > temp.txt')]"
+          "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File initialize.ps1"
         }
       }
     }
