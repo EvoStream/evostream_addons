@@ -186,7 +186,7 @@
         "typeHandlerVersion": "1.7",
         "settings": {
           "fileUris": [
-	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows/initialize.rb"
+	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems171_windows2012/initialize.rb"
           ]
         },
         "protectedSettings": {

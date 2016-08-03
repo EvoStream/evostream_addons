@@ -14,3 +14,5 @@ end
 10.times do |i|
   puts i
 end
+
+File.delete "C:\\EvoStream\\config\\pushPullSetup.xml"
