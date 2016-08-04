@@ -1,5 +1,5 @@
 require 'digest/md5'
-require 'FileUtils'
+require 'fileutils'
 
 VERBOSE = true
 PROXY_DOMAIN = "apiproxy"
@@ -18,7 +18,8 @@ def replace_proxy_password
     instance_id = get_instance_id
     `type #{WEB_CONFIG_AUTH_FILE} | ruby -pe "gsub '__STANDARD_PROXY_DOMAIN__', '#{PROXY_DOMAIN}'" | \
         ruby -pe "gsub '__STANDARD_PROXY_PASSWORD__', '#{instance_id}'" > #{WEB_CONFIG_FILE}`
-    FileUtils.move WEB_CONFIG_AUTH_FILE, DOWNLOAD_FOLDER
+    FileUtils.cp WEB_CONFIG_AUTH_FILE, DOWNLOAD_FOLDER
+    FileUtils.rm WEB_CONFIG_AUTH_FILE
   else
     puts "Missing file '#{WEB_CONFIG_AUTH_FILE}'!" if VERBOSE
   end
@@ -32,7 +33,8 @@ def replace_webui_password
     out_file.puts "evostream:#{password}"
     out_file.puts "user1000:#{password}"
     out_file.close
-    FileUtils.move WEBUI_HTDIGEST_AUTH_FILE, DOWNLOAD_FOLDER
+    FileUtils.cp WEBUI_HTDIGEST_AUTH_FILE, DOWNLOAD_FOLDER
+    FileUtils.rm WEBUI_HTDIGEST_AUTH_FILE
   else
     puts "Missing file '#{WEBUI_HTDIGEST_AUTH_FILE}'!" if VERBOSE
   end
