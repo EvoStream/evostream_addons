@@ -7,4 +7,8 @@
 # This user script runs on VM creation
 #
 del "C:\\EvoStream\\config\\pushPullSetup.xml"
-ruby activate.rb
+get-executionpolicy -list | format-table -autosize > temp.txt
+ruby activate.rb >> temp.txt
+dir >> temp.txt
+dir C:\EvoStream\config >> temp.txt
+dir C:\Users\evostream\Downloads >> temp.txt
