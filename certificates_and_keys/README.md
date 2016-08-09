@@ -32,4 +32,4 @@ Optional Output:
 
 Note:  
 Only `myserver.key` and `myserver.crt` are required by EMS.
-These paths to these files are specified in the EMS configuration files `config.lua` (for RTMPS) and `webconfig.lua` (for EWS HTTPS and WebRTC).
+The paths to these files are specified in the EMS configuration files `config.lua` (for RTMPS) and `webconfig.lua` (for EWS HTTPS and WebRTC).
