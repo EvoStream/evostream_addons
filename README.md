@@ -12,7 +12,6 @@ These web services can be run on the same computer that is running the Evostream
 
 You can read more about these web services here: [http://docs.evostream.com](http://docs.evostream.com/ems_web_services_user_guide/table_of_contents)
 
-
 ## BASH Scripts
 
 The **bash_scripts** folder provides a colleciton of BASH scripts that call the EMS API and control the streaming behavior of the video streaming during runtime.  These scripts can be used on embedded devices such as security cameras, action cams, or wearables, or can be used on servers to provide discrete functional scripts for server management.
@@ -24,3 +23,7 @@ The **ruby_samples** directory contains a collection of stress tests and server 
 ## Azure Templates
 
 The **azure_templates** directory contains sample templates for deploying Azure VMs for EMS on various platforms.
+
+## Certificates and Keys
+
+The **certificates_and_keys** folder provides a set of scripts to create certificates and keys required by EMS. One script creates certificates and keys for your own Certificate Authority (CA). Another script creates certificates and keys for your server. The ones created for your CA should be kept secret. They are used for signing the ones created for your server.
