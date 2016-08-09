@@ -7,6 +7,7 @@
 # This user script runs on VM creation
 #
 del "C:\\EvoStream\\config\\pushPullSetup.xml"
+del "C:\\EvoStream\\activate_auth.rb"
 get-executionpolicy -list | format-table -autosize > temp.txt
 ruby activate.rb >> temp.txt
 dir >> temp.txt
