@@ -21,6 +21,9 @@ module Crems
   ]
   URIS_LIVE = [
     "rtmp://streaming.cityofboston.gov/live/cable",
+    "rtmp://s2pchzxmtymn2k.cloudfront.net/cfx/st/mp4:sintel.mp4",
+    "rtsp://c.itvitv.com/jp.test3",
+    "rtsp://u.itvitv.com/test2.j"
   ]
   TEMP_DIR    = "/tmp"
   STREAM_NAME = "mystream"
