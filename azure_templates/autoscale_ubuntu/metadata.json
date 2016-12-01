@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "Deploy a VM Scale Set with Linux VMs and Autoscale",
+  "description": "This template allows you to deploy a simple VM Scale Set of Linux VMs using the latest patched version of Ubuntu Linux 16.04 or 14.04. These VMs are behind a load balancer with NAT rules for SSH connections. They also have Autoscale integrated",
+  "summary": "This template deploys a VM Scale Set of Linux VMs behind a load balancer with NAT rules for SSH connections and Autoscale integrated",
+  "githubUsername": "dondizon",
+  "dateUpdated": "2016-12-01"
+}
