@@ -287,15 +287,15 @@
                   "timeGrain": "PT1M",
                   "statistic": "Average",
                   "timeWindow": "PT5M",
-                  "timeAggregation": "Average",
+                  "timeAggregation": "Total",
                   "operator": "GreaterThan",
-                  "threshold": 50111000
+                  "threshold": 15000
                 },
                 "scaleAction": {
                   "direction": "Increase",
                   "type": "ChangeCount",
                   "value": "1",
-                  "cooldown": "PT1M"
+                  "cooldown": "PT5M"
                 }
               },
               {
@@ -306,9 +306,9 @@
                   "timeGrain": "PT1M",
                   "statistic": "Average",
                   "timeWindow": "PT5M",
-                  "timeAggregation": "Average",
+                  "timeAggregation": "Total",
                   "operator": "LessThan",
-                  "threshold": 20111000
+                  "threshold": 7000
                 },
                 "scaleAction": {
                   "direction": "Decrease",
