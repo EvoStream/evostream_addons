@@ -1,0 +1,78 @@
+# BANDWIDTH TEST FOR WEBSOCKET
+
+This websocket bandwidth test tool uses a simulated websocket player client to play streams from an EMS server.
+Statistics are gathered at the server while the client ramps up/down the number of streams played.
+
+## PREPARATION
+
+Please refer to [prepare.md](prepare.md) for setup / preparation steps.
+Various settings such as IP address, source stream and ramp profile, as well as bandwidth calculations, are explained there.
+
+## USAGE
+
+A. SERVER SIDE
+
+   1. If the EMS is not running, start it.
+
+   2. Run `ramptest-ws.rb`.
+
+      ```bash
+      $ ruby ramptest-ws.rb
+      ```
+
+   3. Press [7] to list config.
+
+   4. Press [8] to remove config entries.
+
+   5. Repeat the previous step until all config entries are removed.
+
+   6. Press [1] to pull 1 stream.
+
+   7. Press [c] to start capturing statistics.
+
+   8. Wait for at least 3 lines of statistics.
+
+B. CLIENT SIDE
+
+   1. Run `ramptest-ws.rb`.
+
+      ```bash
+      $ ruby ramptest-ws.rb
+      ```
+
+   2. Press [5] to start ramping.
+
+   3. Wait for ramp up and ramp down to finish.
+
+   4. Press [x] to exit.
+   
+C. SERVER SIDE
+
+   1. Wait for the client to finish ramping down.
+
+   2. Press [x] to exit.
+
+   3. Get the results from file `ws-##########.csv` where `##########` is the timestamp.
+
+   4. Convert data files from .csv to .xlsx w/ plots for stream count and cpu/memory/bandwidth usages.
+
+      ```bash
+      $ ruby makesheet.rb
+      ```
+
+## Contributing
+
+1. Fork it ( https://github.com/EvoStream/evostream_addons/fork )
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create a new Pull Request
+
+## Contributors
+
+- [EvoStream](https://github.com/EvoStream)  - creator, maintainer
+
+## License
+
+- [MIT](LICENSE.md)
+
