@@ -125,11 +125,17 @@ class Usage
     return pidUsages
   end
 
-  def getBandwidthUsages(elapsedSec, interface = "eth0")
-    netStats = `cat /proc/net/dev | grep #{interface}`.split
-    rxBytes = netStats[1].to_i
-    txBytes = netStats[9].to_i
-    elapsed = elapsedSec - @lastElapsedSec
+  def getBandwidthUsages(elapsedSec, interface = "")
+    if interface == ""
+      rxBytes = 0
+      txBytes = 0
+      elapsed = 0
+    else
+      netStats = `cat /proc/net/dev | grep #{interface}`.split
+      rxBytes = netStats[1].to_i
+      txBytes = netStats[9].to_i
+      elapsed = elapsedSec - @lastElapsedSec
+    end
     puts "    rx=#{rxBytes} tx=#{txBytes} sum=#{rxBytes + txBytes} bytes, elapsed=#{elapsed}" if !@@quiet_mode
     if (elapsed > 0)
       # convert from bytes/sec to kbps (kilobits/sec)
