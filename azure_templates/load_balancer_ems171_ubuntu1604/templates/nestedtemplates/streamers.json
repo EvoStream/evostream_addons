@@ -13,20 +13,20 @@
       "type": "string",
       "defaultValue": "Standard_D1_v2",
       "metadata": {
-        "description": "Size of VMs in the VM Scale Set."
+        "description": "Size of VMs in the VM Scale Set"
       }
     },
     "vmssName": {
       "type": "string",
       "metadata": {
-        "description": "String used as a base for naming resources (9 characters or less). A hash is prepended to this string for some resources, and resource-specific information is appended."
+        "description": "String used as a base for naming resources (9 characters or less). A hash is prepended to this string for some resources, and resource-specific information is appended"
       },
       "maxLength": 9
     },
     "instanceCount": {
       "type": "int",
       "metadata": {
-        "description": "Number of VM instances (5 or less)."
+        "description": "Number of VM instances (5 or less)"
       },
       "maxValue": 5
     },
@@ -34,66 +34,66 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Unique suffix for resource names."
+        "description": "Unique suffix for resource names"
       }
     },
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Admin username on all VMs."
+        "description": "Admin username on all VMs"
       }
     },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "Admin password on all VMs."
+        "description": "Admin password on all VMs"
       }
     },
     "httpPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "HTTP password for API commands."
+        "description": "HTTP password for API commands"
       }
     },
     "sshKey": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Public SSH Key for Virtual Machine"
+        "description": "Public SSH key for VM"
       }
     },
     "vnetName": {
       "type": "string",
       "metadata": {
-        "description": "vnet name."
+        "description": "vnet name"
       }
     },
     "subnetName": {
       "type": "string",
       "metadata": {
-        "description": "subnet name."
+        "description": "subnet name"
       }
     },
     "addressPrefix": {
       "type": "string",
       "metadata": {
-        "description": "address prefix."
+        "description": "address prefix"
       }
     },
     "subnetPrefix": {
       "type": "string",
       "metadata": {
-        "description": "subnet prefix."
+        "description": "subnet prefix"
       }
     },
     "emsLicense": {
       "type": "string",
       "metadata": {
-        "description": "EMS license."
+        "description": "EMS license"
       }
     },
-    "customScriptFolder": {
+    "customScriptsFolder": {
       "type": "string",
       "metadata": {
         "description": "custom scripts folder"
@@ -101,7 +101,7 @@
     }
   },
   "variables": {
-    "customScriptFolder1": "[parameters('customScriptFolder')]",
+    "customScriptsFolder1": "[parameters('customScriptsFolder')]",
     "apiProxy": "apiproxy",
     "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
     "jumpBoxName": "[concat(variables('namingInfix'), 'oo')]",
@@ -292,8 +292,8 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[concat(variables('customScriptFolder1'), 'origin/startup.sh')]",
-            "[concat(variables('customScriptFolder1'), 'origin/tarball.tgz')]"
+            "[concat(variables('customScriptsFolder1'), 'origin/startup.sh')]",
+            "[concat(variables('customScriptsFolder1'), 'origin/tarball.tgz')]"
           ]
         },
         "protectedSettings": {
@@ -708,8 +708,8 @@
                   "autoUpgradeMinorVersion": true,
                   "settings": {
                     "fileUris": [
-                      "[concat(variables('customScriptFolder1'), 'edge/startup.sh')]",
-                      "[concat(variables('customScriptFolder1'), 'edge/tarball.tgz')]"
+                      "[concat(variables('customScriptsFolder1'), 'edge/startup.sh')]",
+                      "[concat(variables('customScriptsFolder1'), 'edge/tarball.tgz')]"
                     ]
                   },
                   "protectedSettings": {

@@ -39,7 +39,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Public SSH Key for VM"
+        "description": "Public SSH key for VM"
       }
     },
     "vnetName": {
@@ -72,7 +72,7 @@
         "description": "EMS license"
       }
     },
-    "customScriptFolder": {
+    "customScriptsFolder": {
       "type": "string",
       "metadata": {
         "description": "custom scripts folder"
@@ -80,7 +80,7 @@
     }
   },
   "variables": {
-    "customScriptFolder1": "[parameters('customScriptFolder')]",
+    "customScriptsFolder1": "[parameters('customScriptsFolder')]",
     "jumpBoxName": "[concat(parameters('uniqueSuffix'), 'sm')]",
     "jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, parameters('uniqueSuffix'), '1234')), 'smsa')]",
     "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
@@ -90,7 +90,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName1": "[concat(parameters('uniqueSuffix'), 'pipsm')]",
+    "publicIPAddressNameSM": "[concat(parameters('uniqueSuffix'), 'pipsm')]",
     "virtualNetworkName": "[parameters('vnetName')]",
     "subnetName": "[parameters('subnetName')]",
     "addressPrefix": "[parameters('addressPrefix')]",
@@ -143,7 +143,7 @@
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressName1')]",
+      "name": "[variables('publicIPAddressNameSM')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-10-01",
       "properties": {
@@ -156,7 +156,7 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-10-01",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName1'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameSM'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "properties": {
@@ -166,7 +166,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName1'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameSM'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef')]"
@@ -247,8 +247,8 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[concat(variables('customScriptFolder1'), 'sm/startup.sh')]",
-            "[concat(variables('customScriptFolder1'), 'sm/tarball.tgz')]"
+            "[concat(variables('customScriptsFolder1'), 'sm/startup.sh')]",
+            "[concat(variables('customScriptsFolder1'), 'sm/tarball.tgz')]"
           ]
         },
         "protectedSettings": {
@@ -259,7 +259,7 @@
   ],
   "outputs": {
     "publicIpAddressSM": {
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName1')),'2016-07-01').ipAddress]",
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressNameSM')),'2016-07-01').ipAddress]",
       "type": "string"
     }
   }

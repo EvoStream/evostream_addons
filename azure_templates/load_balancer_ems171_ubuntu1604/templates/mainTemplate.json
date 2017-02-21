@@ -46,24 +46,18 @@
       "metadata": {
         "description": "EMS license"
       }
-    },
-    "baseUrl": {
-      "type": "string",
-      "metadata": {
-        "description": "The base URL for dependent assets",
-        "artifactsBaseUrl": ""
-      },
-      "defaultValue": ""
     }
   },
   "variables": {
-    "customScriptFolder": "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/load_balancer_ems171_ubuntu1604/",
+    "baseUrl": "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/load_balancer_ems171_ubuntu1604/",
+    "templatesFolder": "[concat(variables('baseUrl'), 'templates/')]",
+    "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
     "uniqueSuffix1": "[parameters('uniqueSuffix')]",
     "adminUsername1": "[parameters('adminUsername')]",
     "adminPassword1": "[parameters('adminPassword')]",
     "httpPassword1": "[parameters('httpPassword')]",
     "sshKey1": "[parameters('sshKey')]",
-    "vmssName1": "[concat('vmss',parameters('uniqueSuffix'))]",
+    "vmssName1": "[concat('vmss', parameters('uniqueSuffix'))]",
     "instanceCount1": 2,
     "vmSize1": "[parameters('vmSize')]",
     "vneteo": {
@@ -178,7 +172,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('baseUrl'), '/nestedtemplates/manager.json')]",
+          "uri": "[concat(variables('templatesFolder'), 'nestedtemplates/manager.json')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -212,8 +206,8 @@
           "emsLicense": {
             "value": "[variables('emsLicense1')]"
           },
-          "customScriptFolder": {
-            "value": "[variables('customScriptFolder')]"
+          "customScriptsFolder": {
+            "value": "[variables('customScriptsFolder')]"
           }
         }
       }
@@ -228,7 +222,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('baseUrl'), '/nestedtemplates/streamers.json')]",
+          "uri": "[concat(variables('templatesFolder'), 'nestedtemplates/streamers.json')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -274,8 +268,8 @@
           "emsLicense": {
             "value": "[variables('emsLicense1')]"
           },
-          "customScriptFolder": {
-            "value": "[variables('customScriptFolder')]"
+          "customScriptsFolder": {
+            "value": "[variables('customScriptsFolder')]"
           }
         }
       }
