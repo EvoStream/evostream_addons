@@ -1,0 +1,129 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "uniqueSuffix",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Unique Suffix",
+        "toolTip": "Unique suffix for resource names",
+        "constraints": {
+          "required": true,
+          "regex": "^[a-z0-9]{3,4}$",
+          "validationMessage": "The suffix must be 3 or 4 characters long, and can contain only numbers and lowercase letters."
+        }
+      },
+      {
+        "name": "adminUsername",
+        "type": "Microsoft.Compute.UserNameTextBox",
+        "label": "Username",
+        "toolTip": "Admin username for the virtual machines.",
+        "osPlatform": "Linux"
+      },
+      {
+        "name": "SSHCredentials",
+        "type": "Microsoft.Compute.CredentialsCombo",
+        "label": {
+          "authenticationType": "Authentication type",
+          "password": "Password",
+          "confirmPassword": "Confirm password",
+          "sshPublicKey": "SSH public key"
+        },
+        "toolTip": {
+          "authenticationType": "",
+          "password": "",
+          "sshPublicKey": ""
+        },
+        "constraints": {
+          "required": true
+        },
+        "options": {
+          "hideConfirmation": false,
+          "hidePassword": true
+        },
+        "osPlatform": "Linux",
+        "visible": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "vmConfig",
+        "label": "VM configuration",
+        "subLabel": {
+          "preValidation": "Configure the VMs",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "VM settings",
+        "elements": [
+          {
+            "name": "vmSize",
+            "type": "Microsoft.Compute.SizeSelector",
+            "label": "VM Size",
+            "toolTip": "Size of VMs for Origins, Edges, and Streams Manager.",
+            "recommendedSizes": [
+              "Standard_D1_v2",
+              "Standard_D2_v2",
+              "Standard_D3_v2"
+            ],
+            "constraints": {
+              "required": true,
+              "excludedSizes": [
+                  "Basic_A0",
+                  "Basic_A1",
+                  "Basic_A2",
+                  "Basic_A3",
+                  "Basic_A4",
+                  "Standard_A0"
+              ]
+            },
+            "osPlatform": "Linux"
+          },
+          {
+            "name": "httpPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "HTTP password",
+              "confirmPassword": "Confirm password"
+            },
+            "toolTip": "",
+            "constraints": {
+              "required": true,
+              "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{8,72}$",
+              "validationMessage": "The HTTP password must be at least 8 characters long and have 3 out of the following: one number, one lower case, one upper case, or one special character"
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          },
+          {
+            "name": "emsLicense",
+            "type": "Microsoft.Common.FileUpload",
+            "label": "Upload EMS license file",
+            "toolTip": "",
+            "constraints": {
+              "required": true,
+              "accept": ".lic"
+            },
+            "options": {
+              "multiple": false,
+              "uploadMode": "url",
+              "openMode": "text",
+              "encoding": "UTF-8"
+            },
+            "visible": true
+          }
+        ]
+      }
+    ],
+    "outputs": {
+      "uniqueSuffix": "[basics('uniqueSuffix')]",
+      "adminUsername": "[basics('adminUsername')]",
+      "sshKey": "[basics('SSHCredentials').sshPublicKey]",
+      "adminPassword": "[concat(basics('uniqueSuffix'), steps('vmConfig').httpPassword)]",
+      "httpPassword": "[steps('vmConfig').httpPassword]",
+      "vmSize": "[steps('vmConfig').vmSize]",
+      "emsLicense": "[steps('vmConfig').emsLicense]"
+    }
+  }
+}

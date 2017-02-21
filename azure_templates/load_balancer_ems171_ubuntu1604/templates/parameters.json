@@ -1,0 +1,24 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "user1234"
+    },
+    "adminPassword": {
+      "value": "Pa$$word1234"
+    },
+    "httpPassword": {
+      "value": "Pa$$word1234"
+    },
+    "sshKey": {
+      "value": "ssh-rsa AAAAA3NzaC1yc2EBBBBDDQBBBBBBBQC+81000p5g/5nHGn2J7axOFbNj4P9EflcMyroyiTroCumukbV0CQp+S2aJDfmLpaUUU30L4U06Wb02wcWIecK9CVuiPFjng/FFFMUKC4ZSHQgfgwWxdvPPPpza+K+NqDgxBL6ssspB2Zx3y6niaOtEL2mGvcn2mmmSaa/0vhj/UUUnXsR46dE4NVw/cN1TVIpf+A+U/YYYidlAKFtHIBhxI3cthKYG/3tZLrKALr/Q+fEV99hbob2XBNI7GlEb4aUfe9BBB8xXjNRQGbh/3nleUav3RCy1y5cKx43lryQ+b7EdFFFlOrY5zpu8u8PLUJG965dVNjVq3wSDDDmr2OOt email@company.com"
+    },
+    "vmSize": {
+      "value": "Standard_D1_v2"
+    },
+    "uniqueSuffix": {
+      "value": "abc1"
+    }
+  }
+}

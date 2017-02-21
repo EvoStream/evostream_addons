@@ -1,0 +1,154 @@
+configuration=
+{
+	logAppenders=
+	{
+		{
+			name="console appender",
+			type="coloredConsole",
+			level=6
+		},
+		{
+			name="file appender",
+			type="delayedFile",
+			level=6,
+			fileName="/var/log/evostreamms/evo-webserver",
+			newLineCharacters="\n",
+			fileHistorySize=100,
+			fileLength=1024*1024,
+			singleLine=true
+		},
+	},
+	applications=
+	{
+		rootDirectory="./",
+		{
+			name="webserver",
+			description="Built-In Web Server",
+			port=8888,
+			emsPort=1113,		--should match config.lua's inboundBinVariant acceptor
+			bindToIP="",
+			sslMode="disabled", -- always, auto, disabled
+			maxMemSizePerConnection=32*1024, --32*1024,
+			maxConcurrentConnections=5000,
+			connectionTimeout=0, -- 0 - no timeout
+			maxConcurrentConnectionsSameIP=1000,
+			threadPoolSize=8,
+			useIPV6=false,
+			enableIPFilter=false,	--if true, reads white and black lists
+			whitelistFile="/etc/evostreamms/whitelist.txt",
+			blacklistFile="/etc/evostreamms/blacklist.txt",
+			sslKeyFile="/etc/evostreamms/server.key",
+			sslCertFile="/etc/evostreamms/server.cert",
+			enableCache=false,
+			cacheSize=1*1024*1024*1024,	--1GB
+			hasGroupNameAliases=false,
+			webRootFolder="/var/evo-webroot",
+			enableRangeRequests=true,
+			mediaFileDownloadTimeout=30,
+			supportedMimeTypes=
+			{
+				-- non-streaming
+				{	
+					extensions="mp4,mp4v,mpg4",
+					mimeType="video/mp4",
+					streamType="",
+					isManifest=false,
+				},
+				{
+					extensions="flv",
+					mimeType="video/x-flv",
+					streamType="",
+					isManifest=false,
+				},
+				-- streaming
+				{
+					extensions="m3u,m3u8",
+					mimeType="audio/x-mpegurl",
+					streamType="hls",
+					isManifest=true,
+				},
+				{
+					extensions="ts",
+					mimeType="video/mp2t",
+					streamType="hls",
+					isManifest=false,
+				},
+				{
+					extensions="aac",
+					mimeType="audio/aac",
+					streamType="hls",
+					isManifest=false,
+				},
+				{
+					extensions="f4m",
+					mimeType="application/f4m+xml",
+					streamType="hds",
+					isManifest=true,
+				},
+				{
+					extensions="ismc,isma,ismv",
+					mimeType="application/octet-stream",
+					streamType="mss",
+					isManifest=true,
+				},
+				{
+					extensions="fmp4",
+					mimeType="video/mp4",
+					streamType="mss",
+					isManifest=false,
+				},
+				{
+					extensions="mpd",
+					mimeType="application/dash+xml",
+					streamType="dash",
+					isManifest=true,
+				},
+				{
+					extensions="m4s",
+					mimeType="video/mp4",
+					streamType="dash",
+					isManifest=false,
+				},
+				{ -- needed for supporting adobe player's crossdomain.xml
+					extensions="xml",
+					mimeType="application/xml",
+					streamType="",
+					isManifest=false,
+				},
+			},
+			--[[
+			includeResponseHeaders=
+			{
+				{
+					header="Access-Control-Allow-Origin",
+					content="*",
+					override=true,
+				},
+				{
+					header="User-Agent",
+					content="Evostream",
+					override=false,
+				},
+			},
+			]]--
+			apiProxy=
+			{
+				authentication="basic", -- none, basic			
+				pseudoDomain="__STANDARD_PROXY_DOMAIN__",
+				address="127.0.0.1",
+				port=7777,
+				userName="evostream",
+				password="__STANDARD_PROXY_PASSWORD__",
+			},
+			auth=
+			{
+				{
+				domain="EMS_Web_UI", --the domain folder
+     				digestFile="/var/evo-webroot/EMS_Web_UI/settings/passwords/.htdigest",
+     				enable=true,
+				},
+			},
+		},
+	}
+}
+
