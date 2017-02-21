@@ -203,6 +203,9 @@
           "addressPrefix": {
             "value": "[variables('vnetsm').addressSpacePrefix]"
           },
+          "subnetPrefix": {
+            "value": "[variables('vnetsm').subnetPrefix]"
+          },
           "emsLicense": {
             "value": "[variables('emsLicense1')]"
           },
