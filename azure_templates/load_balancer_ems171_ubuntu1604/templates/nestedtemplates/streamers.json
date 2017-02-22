@@ -142,8 +142,8 @@
     "autoscalewadName": "[concat(parameters('vmssName'), 'wad')]",
     "osType": {
       "publisher": "evostream-inc",
-      "offer": "ems-for-template",
-      "sku": "ems-1_7_1-ubuntu-16_04",
+      "offer": "ems-ubuntu-byol",
+      "sku": "ems171_ubuntu1604_byol",
       "version": "1.0.0"
     },
     "imageReference": "[variables('osType')]",
