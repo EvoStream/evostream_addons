@@ -4,19 +4,21 @@
   "parameters": {
     "vmSize": {
       "type": "string",
+      "defaultValue": "Standard_D1_v2",
       "metadata": {
         "description": "Size of VMs in the Origin & Edge Scale Sets and in the Streams Manager."
       }
     },
     "uniqueSuffix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "abc1",
       "metadata": {
         "description": "Unique suffix for resource names."
       }
     },
     "adminUsername": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Admin username on all VMs."
       }
@@ -41,10 +43,10 @@
         "description": "Public SSH Key for Virtual Machine"
       }
     },
-    "emsLicense": {
+    "emsLicenseUrl": {
       "type": "string",
       "metadata": {
-        "description": "EMS license"
+        "description": "EMS license URL"
       }
     }
   },
@@ -74,7 +76,7 @@
       "subnetPrefix": "10.20.0.0/24",
       "peeringName": "peer-sm"
     },
-    "emsLicense1": "[parameters('emsLicense')]"
+    "emsLicenseUrl1": "[parameters('emsLicenseUrl')]"
   },
   "resources": [
     {
@@ -206,8 +208,8 @@
           "subnetPrefix": {
             "value": "[variables('vnetsm').subnetPrefix]"
           },
-          "emsLicense": {
-            "value": "[variables('emsLicense1')]"
+          "emsLicenseUrl": {
+            "value": "[variables('emsLicenseUrl1')]"
           },
           "customScriptsFolder": {
             "value": "[variables('customScriptsFolder')]"
@@ -268,8 +270,8 @@
           "subnetPrefix": {
             "value": "[variables('vneteo').subnetPrefix]"
           },
-          "emsLicense": {
-            "value": "[variables('emsLicense1')]"
+          "emsLicenseUrl": {
+            "value": "[variables('emsLicenseUrl1')]"
           },
           "customScriptsFolder": {
             "value": "[variables('customScriptsFolder')]"

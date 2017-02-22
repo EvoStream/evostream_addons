@@ -87,10 +87,10 @@
         "description": "subnet prefix"
       }
     },
-    "emsLicense": {
+    "emsLicenseUrl": {
       "type": "string",
       "metadata": {
-        "description": "EMS license"
+        "description": "EMS license URL"
       }
     },
     "customScriptsFolder": {
@@ -297,7 +297,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash startup.sh ', parameters('smPublicIp'), ' ', parameters('httpPassword'), ' ', variables('apiProxy'), ' ', parameters('emsLicense'))]"
+          "commandToExecute": "[concat('bash startup.sh ', parameters('smPublicIp'), ' ', parameters('httpPassword'), ' ', variables('apiProxy'), ' ', parameters('emsLicenseUrl'))]"
         }
       }
     },
@@ -713,7 +713,7 @@
                     ]
                   },
                   "protectedSettings": {
-                    "commandToExecute": "[concat('bash startup.sh ', parameters('smPublicIp'), ' ', parameters('httpPassword'), ' ', variables('apiProxy'), ' ', parameters('emsLicense'))]"
+                    "commandToExecute": "[concat('bash startup.sh ', parameters('smPublicIp'), ' ', parameters('httpPassword'), ' ', variables('apiProxy'), ' ', parameters('emsLicenseUrl'))]"
                   }
                 }
               }

@@ -19,6 +19,9 @@
     },
     "uniqueSuffix": {
       "value": "abc1"
+    },
+    "emsLicenseUrl": {
+      "value": "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/LICENSE"
     }
   }
 }

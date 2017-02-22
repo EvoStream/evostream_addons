@@ -97,7 +97,7 @@
             }
           },
           {
-            "name": "emsLicense",
+            "name": "emsLicenseUrl",
             "type": "Microsoft.Common.FileUpload",
             "label": "Upload EMS license file",
             "toolTip": "",
@@ -123,7 +123,7 @@
       "adminPassword": "[concat(basics('uniqueSuffix'), steps('vmConfig').httpPassword)]",
       "httpPassword": "[steps('vmConfig').httpPassword]",
       "vmSize": "[steps('vmConfig').vmSize]",
-      "emsLicense": "[steps('vmConfig').emsLicense]"
+      "emsLicenseUrl": "[steps('vmConfig').emsLicenseUrl]"
     }
   }
 }

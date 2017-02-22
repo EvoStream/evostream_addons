@@ -66,10 +66,10 @@
         "description": "subnet prefix"
       }
     },
-    "emsLicense": {
+    "emsLicenseUrl": {
       "type": "string",
       "metadata": {
-        "description": "EMS license"
+        "description": "EMS license URL"
       }
     },
     "customScriptsFolder": {
@@ -252,7 +252,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash startup.sh ', parameters('adminUsername'), ' ', parameters('emsLicense'))]"
+          "commandToExecute": "[concat('bash startup.sh ', parameters('adminUsername'), ' ', parameters('emsLicenseUrl'))]"
         }
       }
     }
