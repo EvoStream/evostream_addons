@@ -1,4 +1,4 @@
-# crems
+# patchlua
 
 **patchlua** is a tool for programmatically modifying parameters in EMS configuration (LUA) files.
 
