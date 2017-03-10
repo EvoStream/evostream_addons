@@ -6,83 +6,107 @@
       "type": "string",
       "defaultValue": "Standard_D1_v2",
       "metadata": {
-        "description": "Size of VMs in the VM Scale Set"
+        "description": "Size of VMs in the VM Scale Set."
+      }
+    },
+    "publisher": {
+      "type": "string",
+      "metadata": {
+        "description": "The image publisher."
+      }
+    },
+    "offer": {
+      "type": "string",
+      "metadata": {
+        "description": "The image offer."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "The image SKU."
+      }
+    },
+    "version": {
+      "type": "string",
+      "metadata": {
+        "description": "The image version."
       }
     },
     "uniqueSuffix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Unique suffix for resource names"
+        "description": "Unique suffix for resource names."
       }
     },
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Admin username on all VMs"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Admin password on all VMs"
+        "description": "Admin username on all VMs."
       }
     },
     "httpPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "HTTP password for API commands"
+        "description": "HTTP password for API commands."
       }
     },
     "sshKey": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Public SSH key for VM"
+        "description": "SSH public key for VM."
       }
     },
     "vnetName": {
       "type": "string",
       "metadata": {
-        "description": "vnet name"
+        "description": "vnet name."
       }
     },
     "subnetName": {
       "type": "string",
       "metadata": {
-        "description": "subnet name"
+        "description": "subnet name."
       }
     },
     "addressPrefix": {
       "type": "string",
       "metadata": {
-        "description": "address prefix"
+        "description": "address prefix."
       }
     },
     "subnetPrefix": {
       "type": "string",
       "metadata": {
-        "description": "subnet prefix"
+        "description": "subnet prefix."
       }
     },
     "emsLicenseUrl": {
       "type": "string",
       "metadata": {
-        "description": "EMS license URL"
+        "description": "EMS license URL."
       }
     },
     "customScriptsFolder": {
       "type": "string",
       "metadata": {
-        "description": "custom scripts folder"
+        "description": "custom scripts folder."
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "location of resource group."
       }
     }
   },
   "variables": {
     "customScriptsFolder1": "[parameters('customScriptsFolder')]",
-    "jumpBoxName": "[concat(parameters('uniqueSuffix'), 'sm')]",
-    "jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, parameters('uniqueSuffix'), '1234')), 'smsa')]",
+    "uniqueSuffix1": "[toLower(parameters('uniqueSuffix'))]",
+    "jumpBoxName": "[concat(variables('uniqueSuffix1'), 'sm')]",
+    "jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('uniqueSuffix1'), '1234')), 'smsa')]",
     "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
     "jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
     "jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
@@ -90,22 +114,21 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressNameSM": "[concat(parameters('uniqueSuffix'), 'pipsm')]",
+    "publicIPAddressNameSM": "[concat(variables('uniqueSuffix1'), 'pipsm')]",
     "virtualNetworkName": "[parameters('vnetName')]",
     "subnetName": "[parameters('subnetName')]",
     "addressPrefix": "[parameters('addressPrefix')]",
     "subnetPrefix": "[parameters('subnetPrefix')]",
-    "osType": {
-      "publisher": "evostream-inc",
-      "offer": "ems-ubuntu-byol",
-      "sku": "ems171_ubuntu1604_byol",
-      "version": "1.0.0"
+    "imageReference": {
+      "publisher": "[parameters('publisher')]",
+      "offer": "[parameters('offer')]",
+      "sku": "[parameters('sku')]",
+      "version": "[parameters('version')]"
     },
-    "imageReference": "[variables('osType')]",
     "plan": {
-      "name": "[variables('osType').sku]",
-      "publisher": "[variables('osType').publisher]",
-      "product": "[variables('osType').offer]"
+      "name": "[variables('imageReference').sku]",
+      "publisher": "[variables('imageReference').publisher]",
+      "product": "[variables('imageReference').offer]"
     },
     "sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]"
   },
@@ -113,7 +136,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "properties": {
         "addressSpace": {
@@ -134,7 +157,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('jumpBoxSAName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-05-01",
       "sku": {
         "name": "[variables('storageAccountType')]"
@@ -144,7 +167,7 @@
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressNameSM')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "properties": {
         "publicIPAllocationMethod": "Static"
@@ -153,7 +176,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('jumpBoxNicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameSM'))]",
@@ -180,7 +203,7 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('jumpBoxName')]",
       "plan": "[variables('plan')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-08-30",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
@@ -193,7 +216,7 @@
         "osProfile": {
           "computerName": "[variables('jumpBoxName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
+          "adminPassword": "",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
             "ssh": {
@@ -236,7 +259,7 @@
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('jumpBoxName'), '/customscriptsm')]",
       "apiVersion": "2016-08-30",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('jumpBoxName'))]"
       ],

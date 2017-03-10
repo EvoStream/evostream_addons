@@ -5,9 +5,6 @@
     "adminUsername": {
       "value": "user1234"
     },
-    "adminPassword": {
-      "value": "Pa$$word1234"
-    },
     "httpPassword": {
       "value": "Pa$$word1234"
     },
@@ -17,8 +14,14 @@
     "vmSize": {
       "value": "Standard_D1_v2"
     },
-    "uniqueSuffix": {
-      "value": "abc1"
+    "publisher": {
+      "value": "evostream-inc"
+    },
+    "offer": {
+      "value": "ems-ubuntu-byol"
+    },
+    "sku": {
+      "value": "ems171_ubuntu1604_byol"
     },
     "emsLicenseUrl": {
       "value": "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/LICENSE"

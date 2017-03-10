@@ -9,25 +9,38 @@
         "description": "Size of VMs in the Origin & Edge Scale Sets and in the Streams Manager."
       }
     },
-    "uniqueSuffix": {
+    "publisher": {
       "type": "string",
-      "defaultValue": "abc1",
+      "defaultValue": "evostream-inc",
       "metadata": {
-        "description": "Unique suffix for resource names."
+        "description": "The image publisher."
+      }
+    },
+    "offer": {
+      "type": "string",
+      "defaultValue": "ems-ubuntu-byol",
+      "metadata": {
+        "description": "The image offer."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "ems171_ubuntu1604_byol",
+      "metadata": {
+        "description": "The image SKU."
+      }
+    },
+    "version": {
+      "type": "string",
+      "defaultValue": "1.0.0",
+      "metadata": {
+        "description": "The image version."
       }
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "",
       "metadata": {
         "description": "Admin username on all VMs."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Admin password on all VMs."
       }
     },
     "httpPassword": {
@@ -38,15 +51,39 @@
     },
     "sshKey": {
       "type": "string",
-      "defaultValue": "",
       "metadata": {
-        "description": "Public SSH Key for Virtual Machine"
+        "description": "SSH public key for all VMs."
       }
     },
     "emsLicenseUrl": {
       "type": "string",
       "metadata": {
-        "description": "EMS license URL"
+        "description": "EMS license URL."
+      }
+    },
+    "initialEdgeCount": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Initial number of Edge VMs (2 to 4)."
+      },
+      "minValue": 2,
+      "maxValue": 4
+    },
+    "maxEdgeCount": {
+      "type": "int",
+      "defaultValue": 5,
+      "metadata": {
+        "description": "Maximum number of Edge VMs (4 to 10)."
+      },
+      "minValue": 4,
+      "maxValue": 10
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Deployment location."
       }
     }
   },
@@ -54,27 +91,18 @@
     "baseUrl": "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/load_balancer_ems171_ubuntu1604/",
     "templatesFolder": "[concat(variables('baseUrl'), 'templates/')]",
     "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
-    "uniqueSuffix1": "[parameters('uniqueSuffix')]",
+    "uniqueSuffix1": "[substring(uniqueString(concat(resourceGroup().id, variables('baseUrl'))), 0, 4)]",
     "adminUsername1": "[parameters('adminUsername')]",
-    "adminPassword1": "[parameters('adminPassword')]",
     "httpPassword1": "[parameters('httpPassword')]",
     "sshKey1": "[parameters('sshKey')]",
-    "vmssName1": "[concat('vmss', parameters('uniqueSuffix'))]",
-    "instanceCount1": 2,
+    "vmssName1": "[concat('vmss', variables('uniqueSuffix1'))]",
     "vmSize1": "[parameters('vmSize')]",
-    "vneteo": {
-      "name": "[concat('vneteo-', resourceGroup().location)]",
+    "location1": "[parameters('location')]",
+    "vnetone": {
+      "name": "[concat('vnetone-', variables('location1'), '-', variables('uniqueSuffix1'))]",
       "addressSpacePrefix": "10.10.0.0/24",
       "subnetName": "subnet1",
-      "subnetPrefix": "10.10.0.0/24",
-      "peeringName": "peer-eo"
-    },
-    "vnetsm": {
-      "name": "[concat('vnetsm-', resourceGroup().location)]",
-      "addressSpacePrefix": "10.20.0.0/24",
-      "subnetName": "subnet1",
-      "subnetPrefix": "10.20.0.0/24",
-      "peeringName": "peer-sm"
+      "subnetPrefix": "10.10.0.0/24"
     },
     "emsLicenseUrl1": "[parameters('emsLicenseUrl')]"
   },
@@ -82,90 +110,23 @@
     {
       "apiVersion": "2016-10-01",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vneteo').name]",
-      "location": "[resourceGroup().location]",
-      "comments": "This is the first vnet",
+      "name": "[variables('vnetone').name]",
+      "location": "[variables('location1')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('vneteo').addressSpacePrefix]"
+            "[variables('vnetone').addressSpacePrefix]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('vneteo').subnetName]",
+            "name": "[variables('vnetone').subnetName]",
             "properties": {
-              "addressPrefix": "[variables('vneteo').subnetPrefix]"
+              "addressPrefix": "[variables('vnetone').subnetPrefix]"
             }
           }
         ]
-      },
-      "resources": [
-        {
-          "apiVersion": "2016-06-01",
-          "type": "virtualNetworkPeerings",
-          "name": "[variables('vneteo').peeringName]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vneteo').name)]",
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vnetsm').name)]"
-          ],
-          "comments": "This is the peering from vnet 1 to vnet 2",
-          "properties": {
-            "allowVirtualNetworkAccess": true,
-            "allowForwardedTraffic": false,
-            "allowGatewayTransit": false,
-            "useRemoteGateways": false,
-            "remoteVirtualNetwork": {
-              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetsm').name)]"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "apiVersion": "2016-10-01",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetsm').name]",
-      "location": "[resourceGroup().location]",
-      "comments": "This is the second vnet",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('vnetsm').addressSpacePrefix]"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[variables('vnetsm').subnetName]",
-            "properties": {
-              "addressPrefix": "[variables('vnetsm').subnetPrefix]"
-            }
-          }
-        ]
-      },
-      "resources": [
-        {
-          "apiVersion": "2016-06-01",
-          "type": "virtualNetworkPeerings",
-          "name": "[variables('vnetsm').peeringName]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vneteo').name)]",
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vnetsm').name)]"
-          ],
-          "comments": "This is the peering from vnet 2 to vnet 1",
-          "properties": {
-            "allowVirtualNetworkAccess": true,
-            "allowForwardedTraffic": false,
-            "allowGatewayTransit": false,
-            "useRemoteGateways": false,
-            "remoteVirtualNetwork": {
-              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vneteo').name)]"
-            }
-          }
-        }
-      ]
+      }
     },
     {
       "name": "managerSetup",
@@ -184,9 +145,6 @@
           "adminUsername": {
             "value": "[variables('adminUsername1')]"
           },
-          "adminPassword": {
-            "value": "[variables('adminPassword1')]"
-          },
           "httpPassword": {
             "value": "[variables('httpPassword1')]"
           },
@@ -196,23 +154,38 @@
           "vmSize": {
             "value": "[variables('vmSize1')]"
           },
+          "publisher": {
+            "value": "[parameters('publisher')]"
+          },
+          "offer": {
+            "value": "[parameters('offer')]"
+          },
+          "sku": {
+            "value": "[parameters('sku')]"
+          },
+          "version": {
+            "value": "[parameters('version')]"
+          },
           "vnetName": {
-            "value": "[variables('vnetsm').name]"
+            "value": "[variables('vnetone').name]"
           },
           "subnetName": {
-            "value": "[variables('vnetsm').subnetName]"
+            "value": "[variables('vnetone').subnetName]"
           },
           "addressPrefix": {
-            "value": "[variables('vnetsm').addressSpacePrefix]"
+            "value": "[variables('vnetone').addressSpacePrefix]"
           },
           "subnetPrefix": {
-            "value": "[variables('vnetsm').subnetPrefix]"
+            "value": "[variables('vnetone').subnetPrefix]"
           },
           "emsLicenseUrl": {
             "value": "[variables('emsLicenseUrl1')]"
           },
           "customScriptsFolder": {
             "value": "[variables('customScriptsFolder')]"
+          },
+          "location": {
+            "value": "[variables('location1')]"
           }
         }
       }
@@ -240,9 +213,6 @@
           "adminUsername": {
             "value": "[variables('adminUsername1')]"
           },
-          "adminPassword": {
-            "value": "[variables('adminPassword1')]"
-          },
           "httpPassword": {
             "value": "[variables('httpPassword1')]"
           },
@@ -252,29 +222,47 @@
           "vmssName": {
             "value": "[concat(variables('vmssName1'), 'e')]"
           },
-          "instanceCount": {
-            "value": "[variables('instanceCount1')]"
-          },
           "vmSize": {
             "value": "[variables('vmSize1')]"
           },
+          "publisher": {
+            "value": "[parameters('publisher')]"
+          },
+          "offer": {
+            "value": "[parameters('offer')]"
+          },
+          "sku": {
+            "value": "[parameters('sku')]"
+          },
+          "version": {
+            "value": "[parameters('version')]"
+          },
           "vnetName": {
-            "value": "[variables('vneteo').name]"
+            "value": "[variables('vnetone').name]"
           },
           "subnetName": {
-            "value": "[variables('vneteo').subnetName]"
+            "value": "[variables('vnetone').subnetName]"
           },
           "addressPrefix": {
-            "value": "[variables('vneteo').addressSpacePrefix]"
+            "value": "[variables('vnetone').addressSpacePrefix]"
           },
           "subnetPrefix": {
-            "value": "[variables('vneteo').subnetPrefix]"
+            "value": "[variables('vnetone').subnetPrefix]"
           },
           "emsLicenseUrl": {
             "value": "[variables('emsLicenseUrl1')]"
           },
           "customScriptsFolder": {
             "value": "[variables('customScriptsFolder')]"
+          },
+          "initialEdgeCount": {
+            "value": "[parameters('initialEdgeCount')]"
+          },
+          "maxEdgeCount": {
+            "value": "[parameters('maxEdgeCount')]"
+          },
+          "location": {
+            "value": "[variables('location1')]"
           }
         }
       }

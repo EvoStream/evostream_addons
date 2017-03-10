@@ -1,19 +1,8 @@
 {
   "handler": "Microsoft.Compute.MultiVm",
-  "version": "0.0.1-preview",
+  "version": "0.1.2-preview",
   "parameters": {
     "basics": [
-      {
-        "name": "uniqueSuffix",
-        "type": "Microsoft.Common.TextBox",
-        "label": "Unique Suffix",
-        "toolTip": "Unique suffix for resource names",
-        "constraints": {
-          "required": true,
-          "regex": "^[a-z0-9]{3,4}$",
-          "validationMessage": "The suffix must be 3 or 4 characters long, and can contain only numbers and lowercase letters."
-        }
-      },
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
@@ -33,7 +22,7 @@
         "toolTip": {
           "authenticationType": "",
           "password": "",
-          "sshPublicKey": ""
+          "sshPublicKey": "SSH public key for all VMs."
         },
         "constraints": {
           "required": true
@@ -77,7 +66,75 @@
                   "Standard_A0"
               ]
             },
-            "osPlatform": "Linux"
+            "osPlatform": "Linux",
+            "imageReference": {
+              "publisher": "evostream-inc",
+              "offer": "ems-ubuntu-byol",
+              "sku": "ems171_ubuntu1604_byol"
+            },
+            "count": 7
+          },
+          {
+            "name": "initialEdgeCount",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Initial Edge Count",
+            "defaultValue": "2",
+            "toolTip": "Initial number of Edge VMs.",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "2",
+                  "value": 2
+                },
+                {
+                  "label": "3",
+                  "value": 3
+                },
+                {
+                  "label": "4",
+                  "value": 4
+                }
+              ]
+            }
+          },
+          {
+            "name": "maxEdgeCount",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Maximum Edge Count",
+            "defaultValue": "5",
+            "toolTip": "Maximum number of Edge VMs.",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "4",
+                  "value": 4
+                },
+                {
+                  "label": "5",
+                  "value": 5
+                },
+                {
+                  "label": "6",
+                  "value": 6
+                },
+                {
+                  "label": "7",
+                  "value": 7
+                },
+                {
+                  "label": "8",
+                  "value": 8
+                },
+                {
+                  "label": "9",
+                  "value": 9
+                },
+                {
+                  "label": "10",
+                  "value": 10
+                }
+              ]
+            }
           },
           {
             "name": "httpPassword",
@@ -86,7 +143,7 @@
               "password": "HTTP password",
               "confirmPassword": "Confirm password"
             },
-            "toolTip": "",
+            "toolTip": "Password for HTTP API commands to EMS.",
             "constraints": {
               "required": true,
               "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{8,72}$",
@@ -117,13 +174,18 @@
       }
     ],
     "outputs": {
-      "uniqueSuffix": "[basics('uniqueSuffix')]",
       "adminUsername": "[basics('adminUsername')]",
       "sshKey": "[basics('SSHCredentials').sshPublicKey]",
-      "adminPassword": "[concat(basics('uniqueSuffix'), steps('vmConfig').httpPassword)]",
       "httpPassword": "[steps('vmConfig').httpPassword]",
       "vmSize": "[steps('vmConfig').vmSize]",
-      "emsLicenseUrl": "[steps('vmConfig').emsLicenseUrl]"
+      "publisher": "[steps('vmConfig').vmSize.imageReference.publisher]",
+      "offer": "[steps('vmConfig').vmSize.imageReference.offer]",
+      "sku": "[steps('vmConfig').vmSize.imageReference.sku]",
+      "version": "1.0.0",
+      "emsLicenseUrl": "[steps('vmConfig').emsLicenseUrl]",
+      "initialEdgeCount": "[steps('vmConfig').initialEdgeCount]",
+      "maxEdgeCount": "[steps('vmConfig').maxEdgeCount]",
+      "location": "[location()]"
     }
   }
 }

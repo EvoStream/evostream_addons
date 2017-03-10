@@ -5,7 +5,7 @@
     "smPublicIp": {
       "type": "string",
       "metadata": {
-        "description": "Public IP of Streams Manager"
+        "description": "Public IP of Stream Manager."
       },
       "maxLength": 15
     },
@@ -13,97 +13,129 @@
       "type": "string",
       "defaultValue": "Standard_D1_v2",
       "metadata": {
-        "description": "Size of VMs in the VM Scale Set"
+        "description": "Size of VMs in the VM Scale Set."
+      }
+    },
+    "publisher": {
+      "type": "string",
+      "metadata": {
+        "description": "The image publisher."
+      }
+    },
+    "offer": {
+      "type": "string",
+      "metadata": {
+        "description": "The image offer."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "The image SKU."
+      }
+    },
+    "version": {
+      "type": "string",
+      "metadata": {
+        "description": "The image version."
       }
     },
     "vmssName": {
       "type": "string",
       "metadata": {
-        "description": "String used as a base for naming resources (9 characters or less). A hash is prepended to this string for some resources, and resource-specific information is appended"
+        "description": "String used as a base for naming resources (9 characters or less). A hash is prepended to this string for some resources, and resource-specific information is appended."
       },
       "maxLength": 9
-    },
-    "instanceCount": {
-      "type": "int",
-      "metadata": {
-        "description": "Number of VM instances (5 or less)"
-      },
-      "maxValue": 5
     },
     "uniqueSuffix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Unique suffix for resource names"
+        "description": "Unique suffix for resource names."
       }
     },
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Admin username on all VMs"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Admin password on all VMs"
+        "description": "Admin username on all VMs."
       }
     },
     "httpPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "HTTP password for API commands"
+        "description": "HTTP password for API commands."
       }
     },
     "sshKey": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Public SSH key for VM"
+        "description": "SSH public key for all VMs."
       }
     },
     "vnetName": {
       "type": "string",
       "metadata": {
-        "description": "vnet name"
+        "description": "Vnet name."
       }
     },
     "subnetName": {
       "type": "string",
       "metadata": {
-        "description": "subnet name"
+        "description": "Subnet name."
       }
     },
     "addressPrefix": {
       "type": "string",
       "metadata": {
-        "description": "address prefix"
+        "description": "Address prefix."
       }
     },
     "subnetPrefix": {
       "type": "string",
       "metadata": {
-        "description": "subnet prefix"
+        "description": "Subnet prefix."
       }
     },
     "emsLicenseUrl": {
       "type": "string",
       "metadata": {
-        "description": "EMS license URL"
+        "description": "EMS license URL."
       }
     },
     "customScriptsFolder": {
       "type": "string",
       "metadata": {
-        "description": "custom scripts folder"
+        "description": "custom scripts folder."
+      }
+    },
+    "initialEdgeCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Initial number of Edge VMs (2 to 4)."
+      },
+      "minValue": 2,
+      "maxValue": 4
+    },
+    "maxEdgeCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Maximum number of Edge VMs (4 to 10)."
+      },
+      "minValue": 4,
+      "maxValue": 10
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location of resource group."
       }
     }
   },
   "variables": {
     "customScriptsFolder1": "[parameters('customScriptsFolder')]",
     "apiProxy": "apiproxy",
-    "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
+    "namingInfix": "[toLower(substring(concat(parameters('vmssName'), parameters('uniqueSuffix')), 0, 9))]",
     "jumpBoxName": "[concat(variables('namingInfix'), 'oo')]",
     "jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), '1234')), 'oosa')]",
     "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
@@ -140,17 +172,16 @@
     "lbPoolID": "[concat(variables('lbID'),'/backendAddressPools/', variables('bePoolName'))]",
     "lbProbeID": "[concat(variables('lbID'),'/probes/tcpProbe')]",
     "autoscalewadName": "[concat(parameters('vmssName'), 'wad')]",
-    "osType": {
-      "publisher": "evostream-inc",
-      "offer": "ems-ubuntu-byol",
-      "sku": "ems171_ubuntu1604_byol",
-      "version": "1.0.0"
+    "imageReference": {
+      "publisher": "[parameters('publisher')]",
+      "offer": "[parameters('offer')]",
+      "sku": "[parameters('sku')]",
+      "version": "[parameters('version')]"
     },
-    "imageReference": "[variables('osType')]",
     "plan": {
-      "name": "[variables('osType').sku]",
-      "publisher": "[variables('osType').publisher]",
-      "product": "[variables('osType').offer]"
+      "name": "[variables('imageReference').sku]",
+      "publisher": "[variables('imageReference').publisher]",
+      "product": "[variables('imageReference').offer]"
     },
     "sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]"
   },
@@ -158,7 +189,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "properties": {
         "addressSpace": {
@@ -179,7 +210,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('jumpBoxSAName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-05-01",
       "sku": {
         "name": "[variables('storageAccountType')]"
@@ -189,7 +220,7 @@
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressNameOrigin')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "properties": {
         "publicIPAllocationMethod": "Static"
@@ -198,7 +229,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('jumpBoxNicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameOrigin'))]",
@@ -225,7 +256,7 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('jumpBoxName')]",
       "plan": "[variables('plan')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-08-30",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
@@ -238,7 +269,7 @@
         "osProfile": {
           "computerName": "[variables('jumpBoxName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
+          "adminPassword": "",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
             "ssh": {
@@ -281,7 +312,7 @@
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('jumpBoxName'), '/customscriptorigin')]",
       "apiVersion": "2016-08-30",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('jumpBoxName'))]"
       ],
@@ -304,7 +335,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[concat(variables('uniqueStringArray')[copyIndex()], variables('newStorageAccountSuffix'))]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-05-01",
       "copy": {
         "name": "storageLoop",
@@ -318,7 +349,7 @@
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressNameEdge')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
@@ -327,7 +358,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('loadBalancerName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-10-01",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressNameEdge'))]"
@@ -618,7 +649,7 @@
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[parameters('vmssName')]",
       "plan": "[variables('plan')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "apiVersion": "2016-08-30",
       "dependsOn": [
         "storageLoop",
@@ -628,7 +659,7 @@
       "sku": {
         "name": "[parameters('vmSize')]",
         "tier": "Standard",
-        "capacity": "[parameters('instanceCount')]"
+        "capacity": "[parameters('initialEdgeCount')]"
       },
       "properties": {
         "overprovision": false,
@@ -654,7 +685,7 @@
           "osProfile": {
             "computerNamePrefix": "[parameters('vmssName')]",
             "adminUsername": "[parameters('adminUsername')]",
-            "adminPassword": "[parameters('adminPassword')]",
+            "adminPassword": "",
             "linuxConfiguration": {
               "disablePasswordAuthentication": "true",
               "ssh": {
@@ -726,7 +757,7 @@
       "type": "microsoft.insights/autoscalesettings",
       "apiVersion": "2015-04-01",
       "name": "[variables('autoscalewadName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]"
       ],
@@ -739,8 +770,8 @@
             "name": "Profile1",
             "capacity": {
               "minimum": 2,
-              "maximum": 5,
-              "default": 2
+              "maximum": "[parameters('maxEdgeCount')]",
+              "default": "[parameters('initialEdgeCount')]"
             },
             "rules": [
               {
