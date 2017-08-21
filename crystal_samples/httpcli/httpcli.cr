@@ -5,9 +5,14 @@
 # Released under the MIT License
 #
 
+require "yaml"
 require "./lib/*"
 
 module HttpCli
+  ems_settings : Array(YAML::Any) | Nil
+  ems_settings = YAML.parse_all(File.read(SETTINGS_FILE)) if File.exists?(SETTINGS_FILE)
+  ems = Ems.new(ems_settings)
   parameters = ARGV.join(" ")
-  send_ems(parameters)
+  parameters = "version" if parameters.size < 3
+  Ems.send_ems(parameters)
 end

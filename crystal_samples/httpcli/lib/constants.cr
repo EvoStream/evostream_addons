@@ -6,7 +6,6 @@
 #
 
 module HttpCli
-  TRACE         = 2 # 0=quiet, 1=minimal, 2=verbose
-  EMS_IP        = "localhost"
-  EMS_CLI_PORT  = 7777
+  TRACE = 2 # 0=quiet, 1=minimal, 2=verbose
+  SETTINGS_FILE = "./settings.yml"
 end

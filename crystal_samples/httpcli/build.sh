@@ -1,3 +1,3 @@
 #!/bin/sh
-crystal build httpcli.cr --release
+crystal build httpcli.cr
 strip httpcli

@@ -19,29 +19,129 @@
 
 ## Usage
 
-1. Start EMS
+1. Start the EMS
 
    ```bash
    $ sudo service evostreamms start
    ```
 
-2. Build httpcli binary
+2. Build the httpcli binary
    
    ```bash
    $ crystal build httpcli.cr
    ```
 
-3. Run httpcli
+3. Edit the settings
+
+   Modify the settings file, "settings.yml", according to your EMS configuration.
+
+   ```yaml
+   version: 0.0.0 # 0.0.0 / 1.7.1 / 2.0.0
+   ip: 127.0.0.1
+   username: username
+   password: password
+   domain: apiproxy
+   0.0.0: { port: 7777 }
+   1.7.1: { port: 8888 }
+   2.0.0: { port: 8888 }
+   ```
+
+   Set the parameter "version" to "0.0.0" for sending API commands thru port 7777 (JSON_CLI).
+   Set the parameter "version" to "1.7.1" or "2.0.0" for sending API commands thru port 8888 (HTTP_CLI).
+   Set the parameter "ip" to the IP address of the EMS.
+   The parameters "username", "password", and "domain" are used only for HTTP_CLI.
+
+4. Run httpcli
+
+   Example 1. Normal response for version command.
 
    ```bash
    $ ./httpcli version
    Send to EMS 'version'
+   Sent via HTTP 'http://localhost:7777/version'
    Received from EMS:
-   {"data":{"banner":"EvoStream Media Server (www.evostream.com) version 1.7.0 build 4283 with hash: 395ff5e220ea7311adf3fca70960fb30c7785d34 - PacMan|m| - (built for Ubuntu-14.04-x86_64 on 2016-01-27T10:00:15.000)","branchName":"","buildDate":"2016-01-27T10:00:15.000","buildNumber":"4283","codeName":"PacMan|m|","hash":"395ff5e220ea7311adf3fca70960fb30c7785d34","releaseNumber":"1.7.0"},"description":"Version","status":"SUCCESS"}
+   {
+     "data": {
+       "banner": "EvoStream Media Server (www.evostream.com) version 1.7.1 build 4491 with hash: 64b305253110afc4acd5aeaf87f0a0b0f9b53526 - PacMan|m| - (built for Ubuntu-16.04-x86_64 on 2016-06-17T10:05:48.000)",
+       "branchName": "",
+       "buildDate": "2016-06-17T10:05:48.000",
+       "buildNumber": "4491",
+       "codeName": "PacMan|m|",
+       "hash": "64b305253110afc4acd5aeaf87f0a0b0f9b53526",
+       "releaseNumber": "1.7.1"
+     },
+     "description": "Version",
+     "status": "SUCCESS"
+   }
+   ```
 
+   Example 2. Normal response for pullstream command.
+
+   ```bash
    $ ./httpcli pullstream uri=rtmp://streaming.cityofboston.gov/live/cable localstreamname=mystream
+   Send to EMS 'pullstream uri=rtmp://streaming.cityofboston.gov/live/cable localstreamname=mystream'
+   Sent via HTTP 'http://localhost:7777/pullstream?params=dXJpPXJ0bXA6Ly9zdHJlYW1pbmcuY2l0eW9mYm9zdG9uLmdvdi9saXZlL2NhYmxlIGxvY2Fsc3RyZWFtbmFtZT1teXN0cmVhbTE='
    Received from EMS:
-   {"data":{"audioCodecBytes":"","configId":1,"emulateUserAgent":"EvoStream Media Server (www.evostream.com) player","forceTcp":false,"httpProxy":"","isAudio":true,"keepAlive":true,"localStreamName":"mystream","operationType":1,"pageUrl":"","ppsBytes":"","rangeEnd":-1,"rangeStart":-2,"rtcpDetectionInterval":10,"sendRenewStream":false,"spsBytes":"","ssmIp":"","swfUrl":"","tcUrl":"","tos":256,"ttl":256,"uri":{"document":"cable","documentPath":"\/live\/","documentWithFullParameters":"cable","fullDocumentPath":"\/live\/cable","fullDocumentPathWithParameters":"\/live\/cable","fullParameters":"","fullUri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","fullUriWithAuth":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","host":"streaming.cityofboston.gov","ip":"140.241.251.94","originalUri":"rtmp:\/\/streaming.cityofboston.gov\/live\/cable","parameters":{},"password":"","port":1935,"portSpecified":false,"scheme":"rtmp","userName":""}},"description":"Stream rtmp:\/\/streaming.cityofboston.gov\/live\/cable enqueued for pulling","status":"SUCCESS"}
+   {
+     "data": {
+       "audioCodecBytes": "",
+       "configId": 5,
+       "emulateUserAgent": "EvoStream Media Server (www.evostream.com) player",
+       "forceTcp": false,
+       "httpProxy": "",
+       "isAudio": true,
+       "keepAlive": true,
+       "localStreamName": "mystream",
+       "operationType": 1,
+       "pageUrl": "",
+       "ppsBytes": "",
+       "rangeEnd": -1,
+       "rangeStart": -2,
+       "rtcpDetectionInterval": 10,
+       "sendRenewStream": false,
+       "spsBytes": "",
+       "ssmIp": "",
+       "swfUrl": "",
+       "tcUrl": "",
+       "tos": 256,
+       "ttl": 256,
+       "uri": {
+         "document": "cable",
+         "documentPath": "/live/",
+         "documentWithFullParameters": "cable",
+         "fullDocumentPath": "/live/cable",
+         "fullDocumentPathWithParameters": "/live/cable",
+         "fullParameters": "",
+         "fullUri": "rtmp://streaming.cityofboston.gov/live/cable",
+         "fullUriWithAuth": "rtmp://streaming.cityofboston.gov/live/cable",
+         "host": "streaming.cityofboston.gov",
+         "ip": "140.241.251.94",
+         "originalUri": "rtmp://streaming.cityofboston.gov/live/cable",
+         "parameters": {},
+         "password": "",
+         "port": 1935,
+         "portSpecified": false,
+         "scheme": "rtmp",
+         "userName": ""
+       }
+     },
+     "description": "Stream rtmp://streaming.cityofboston.gov/live/cable enqueued for pulling",
+     "status": "SUCCESS"
+   }
+   ```
+
+   Example 3. Error response due to duplicate stream name.
+
+   ```bash
+   $ ./httpcli pullstream uri=rtmp://streaming.cityofboston.gov/live/cable localstreamname=mystream
+   Send to EMS 'pullstream uri=rtmp://streaming.cityofboston.gov/live/cable localstreamname=mystream'
+   Sent via HTTP 'http://localhost:7777/pullstream?params=dXJpPXJ0bXA6Ly9zdHJlYW1pbmcuY2l0eW9mYm9zdG9uLmdvdi9saXZlL2NhYmxlIGxvY2Fsc3RyZWFtbmFtZT1teXN0cmVhbQ=='
+   Received from EMS:
+   {
+     "data": null,
+     "description": "Stream name mystream already taken",
+     "status": "FAIL"
+   }
    ```
 
 ## Downloads
@@ -57,11 +157,11 @@
 - Tweaks in httpcli/constants.cr
 
   - TRACE adjusts the console output for debugging
-  - EMS_IP sets the IP address of the target EMS (the default is localhost)
+  - SETTINGS_FILE changes the path to the httpcli settings. If the settings file is missing, default settings will be used.
 
 - Build a binary for release (optional)
   ```bash
-  $ crystal build httpcli.cr --release
+  $ crystal build httpcli.cr
   ```
 
 ## Contributing
