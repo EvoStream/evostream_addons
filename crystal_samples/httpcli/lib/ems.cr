@@ -22,7 +22,11 @@ module HttpCli
     @@domain : String = "apiproxy"
 
     def initialize(settings : Array(YAML::Any) | Nil)
-      if settings
+      if !settings
+        puts "Missing settings file! Please put file '#{SETTINGS_FILE})' in current directory. Using default settings.".colorize(:light_red)
+        return
+      end
+      begin
         @@version = settings[0]["version"].to_s
         @@ip = settings[0]["ip"].to_s
         @@port = settings[0][@@version]["port"].to_s
@@ -31,8 +35,10 @@ module HttpCli
           @@password = settings[0]["password"].to_s
           @@domain = settings[0]["domain"].to_s
         end
-      else
-        puts "-- Settings file (#{SETTINGS_FILE}) is missing! Using default settings. --".colorize(:light_red)
+      rescue ex
+        puts "Error: #{ex.message}".colorize(:light_red) if TRACE > 1
+        puts "Bad settings file! Please check if file '#{SETTINGS_FILE})' is valid. Using default settings.".colorize(:light_red)
+        return
       end
     end
 
@@ -53,7 +59,7 @@ module HttpCli
         suffix = "?params=#{params}" if parts.size > 0
         url = "http://#{@@username}:#{@@password}@#{@@ip}:#{@@port}/#{@@domain}/#{cmd}#{suffix}"
       else
-        url = "-- Invalid version (#{@@version})! Should be 0.0.0, 1.7.1, or 2.0.0. --".colorize(:light_red)
+        url = "Invalid version (#{@@version})! Should be 0.0.0, 1.7.1, or 2.0.0.".colorize(:light_red)
       end
       puts "Sent via HTTP '#{url}'".colorize(:blue) if TRACE > 1
       text = `curl -s #{url}`
