@@ -5,6 +5,10 @@
 # Released under the MIT License
 #
 
-module HttpCli
-  SETTINGS_FILE = "./settings.yml"
+def puts_error(text)
+  puts text.colorize(:light_red).underline
+end
+
+def puts_info(text)
+  puts text.colorize(:light_cyan)
 end
