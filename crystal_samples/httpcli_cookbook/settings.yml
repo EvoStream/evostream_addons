@@ -1,0 +1,9 @@
+verbosity: 0 # 0=simple json, 1=pretty json, 2=with remarks, 3=with details
+version: 0.0.0 # 0.0.0 / 1.7.1 / 2.0.0
+ip: 127.0.0.1
+username: username
+password: password
+domain: apiproxy
+0.0.0: { port: 7777 }
+1.7.1: { port: 8888 }
+2.0.0: { port: 8888 }
