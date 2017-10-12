@@ -7,7 +7,6 @@ The sample files provide an easy way to build and run Docker images for EMS 2.0.
 ## Installing Docker
 
 Install Docker on your machine by following these steps:
-
 ```
 wget https://download.docker.com/linux/static/stable/x86_64/docker-17.09.0-ce.tgz
 tar -xvf docker-17.09.0-ce.tgz
@@ -18,7 +17,6 @@ sudo dockerd &
 ## Testing Docker
 
 Run the "hello world" demo to test your Docker installation.
-
 ```
 sudo docker run --name hello hello-world
 sudo docker ps -a
@@ -51,10 +49,13 @@ Run the script `run-mybuild.sh` to run your self-built Docker image for EMS 2.0.
 
 The Docker image doesn't include an EMS license.
 You may obtain a trial license from the EvoStream website, http://evostream.com.
-Copy your license file `License.lic` to /etc/evostreamms.
-
-Start the EMS.
+From your host machine, copy the license file `License.lic` to `/etc/evostreamms` in the container:
 ```
-sudo service evostreamms start
+sudo docker cp /path/to/License.lic myems:/etc/evostreamms
 ```
+Replace `myems` with `ems5550` or whatever container name was used for running the Docker image.
 
+Inside the Docker container, start the EMS (in privileged mode):
+```
+service evostreamms start
+```
