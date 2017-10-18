@@ -6,5 +6,5 @@
 #
 
 module HttpCli
-  SETTINGS_FILE = "./settings.yml"
+  SETTINGS_FILE = "./settings-httpcli.yml"
 end
