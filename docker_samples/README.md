@@ -51,7 +51,8 @@ sudo docker run --name ems5550 -i -t \
 
 ## Building Your Own Docker Image for EMS 2.0.0 (optional)
 
-Run the script below to build your own Docker image for EMS 2.0.0.
+Save [Dockerfile](./Dockerfile) into an empty directory. Go to that directory,
+then run the script below to build your own Docker image for EMS 2.0.0.
 ```
 sudo docker build -t ems200-ubuntu1604:mybuild .
 ```
