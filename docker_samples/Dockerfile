@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER don dizon (dondizon@gmail.com)
+MAINTAINER evostream (salesupport@evostream.com)
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ruby
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget
