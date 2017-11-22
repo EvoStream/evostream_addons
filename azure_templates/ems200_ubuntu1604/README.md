@@ -7,7 +7,7 @@
 
 This template deploys the EvoStream Media Server version 2.0.0 on Ubuntu 16.04.
 
-After deployment, view the EMS Web UI by browsing http://MyEmsIpAddress:8888/, where MyEmsIpAddress is the IP address of the deployed VM.
+After deployment, view the EMS Web UI by browsing http://MyEmsIpAddress:4100/, where MyEmsIpAddress is the IP address of the deployed VM.
 
 For EMS Web UI documentation, please refer to:
 http://docs.evostream.com/2.0/userguide_webuioverview.html
