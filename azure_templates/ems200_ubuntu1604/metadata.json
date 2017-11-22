@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "Deploy EMS 2.0.0 on Ubuntu 16.04",
+  "description": "This template deploys EvoStream Media Server version 2.0.0 on Ubuntu 16.04.",
+  "summary": "Deploy EMS 2.0.0 on Ubuntu 16.04",
+  "githubUsername": "dondizon",
+  "dateUpdated": "2017-11-22"
+}
