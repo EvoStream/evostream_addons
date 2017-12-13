@@ -2,11 +2,17 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "virtualMachineName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Virtual Machine."
+      }
+    },
     "storageAccountNamePrefix": {
       "type": "string",
       "maxLength": 11,
       "metadata": {
-        "description": "Name prefix of the Storage Account"
+        "description": "Name prefix of the Storage Account."
       }
     },
     "adminUsername": {
@@ -42,16 +48,14 @@
     "publicIPAddressName": "ems200pip",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "ems200vm",
     "vmSize": "Standard_D1_v2",
     "virtualNetworkName": "ems200vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "apiVersion": "2015-06-15"
+    "subnetRef": "[concat(variables('vnetID'), '/subnets/', variables('subnetName'))]"
   },
   "resources": [
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('storageAccountNamePrefix')]",
       "location": "[resourceGroup().location]",
@@ -60,7 +64,7 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
@@ -72,7 +76,7 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[resourceGroup().location]",
@@ -93,7 +97,7 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
       "location": "[resourceGroup().location]",
@@ -119,9 +123,9 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('vmName')]",
+      "name": "[parameters('virtualMachineName')]",
       "plan": {
         "name": "[variables('imageSku')]",
         "publisher": "[variables('imagePublisher')]",
@@ -137,7 +141,7 @@
           "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('vmName')]",
+          "computerName": "[parameters('virtualMachineName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -151,7 +155,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountNamePrefix'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+              "uri": "[concat('http://', parameters('storageAccountNamePrefix'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -168,11 +172,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'),'/newuserscript')]",
-      "apiVersion": "[variables('apiVersion')]",
+      "name": "[concat(parameters('virtualMachineName'), '/newuserscript')]",
+      "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
@@ -181,7 +185,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-	    "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems200_ubuntu1604/initialize.rb"
+            "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/azure_templates/ems200_ubuntu1604/initialize.rb"
           ]
         },
         "protectedSettings": {
