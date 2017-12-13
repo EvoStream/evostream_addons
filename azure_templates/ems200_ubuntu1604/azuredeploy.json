@@ -64,7 +64,7 @@
       }
     },
     {
-      "apiVersion": "2017-06-01",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
@@ -76,7 +76,7 @@
       }
     },
     {
-      "apiVersion": "2017-06-01",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[resourceGroup().location]",
@@ -97,7 +97,7 @@
       }
     },
     {
-      "apiVersion": "2017-06-01",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
       "location": "[resourceGroup().location]",
@@ -123,7 +123,7 @@
       }
     },
     {
-      "apiVersion": "2017-03-30",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('virtualMachineName')]",
       "plan": {
@@ -173,7 +173,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('virtualMachineName'), '/newuserscript')]",
-      "apiVersion": "2017-03-30",
+      "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
