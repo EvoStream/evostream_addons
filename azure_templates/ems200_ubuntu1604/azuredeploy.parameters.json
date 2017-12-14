@@ -5,17 +5,11 @@
     "virtualMachineName": {
       "value": "ems200vm"
     },
-    "storageAccountNamePrefix": {
-      "value": "ems200sa"
-    },
     "adminUsername": {
       "value": "emsuser"
     },
     "adminPassword": {
       "value": "emsP4$$"
-    },
-    "dnsLabelPrefix": {
-      "value": "ems200dns"
     }
   }
 }

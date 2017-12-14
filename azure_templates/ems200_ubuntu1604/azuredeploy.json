@@ -8,13 +8,6 @@
         "description": "Name of the Virtual Machine."
       }
     },
-    "storageAccountNamePrefix": {
-      "type": "string",
-      "maxLength": 11,
-      "metadata": {
-        "description": "Name prefix of the Storage Account."
-      }
-    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -25,12 +18,6 @@
       "type": "securestring",
       "metadata": {
         "description": "Password for the Virtual Machine."
-      }
-    },
-    "dnsLabelPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "DNS Label for the Public IP. Must be lowercase. It should match with the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$ or it will raise an error."
       }
     }
   },
@@ -50,14 +37,15 @@
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "Standard_D1_v2",
     "virtualNetworkName": "ems200vnet",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'), '/subnets/', variables('subnetName'))]"
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetID'), '/subnets/', variables('subnetName'))]",
+    "storageAccountName": "[toLower(concat('sa', uniqueString(resourceGroup().id)))]"
   },
   "resources": [
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('storageAccountNamePrefix')]",
+      "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
@@ -69,10 +57,7 @@
       "name": "[variables('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsLabelPrefix')]"
-        }
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]"
       }
     },
     {
@@ -112,7 +97,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef')]"
@@ -133,7 +118,7 @@
       },
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountNamePrefix'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
       ],
       "properties": {
@@ -155,7 +140,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://', parameters('storageAccountNamePrefix'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), '.vhd')]"
+              "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -164,7 +149,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
             }
           ]
         }
