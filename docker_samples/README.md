@@ -8,8 +8,9 @@ This is a simplified document on how to build and run Docker images for EMS 2.0.
 
 Install Docker on your machine by following these steps:
 ```
-$ wget https://download.docker.com/linux/static/stable/x86_64/docker-17.09.0-ce.tgz
-$ tar -xvf docker-17.09.0-ce.tgz
+$ cd /tmp
+$ wget https://download.docker.com/linux/static/stable/x86_64/docker-17.09.1-ce.tgz
+$ tar -xvf docker-17.09.1-ce.tgz
 $ sudo cp docker/* /usr/bin/
 ```
 
@@ -37,7 +38,7 @@ $ sudo docker rmi hello-world
 
 Run the script below to use the pre-built Docker image for EMS 2.0.0 on the EvoStream public repository on Docker Hub.
 ```
-sudo docker run --name ems5550 -i -t \
+sudo docker run --name ems5550-1 -i -t \
   -p 1112:1112/tcp \
   -p 1222:1222/tcp \
   -p 1935:1935/tcp \
@@ -55,7 +56,7 @@ sudo docker run --name ems5550 -i -t \
   -p 9898:9898/UDP \
   -p 9998:9998/tcp \
   -p 9999:9999/tcp \
-  evostream/ems200-ubuntu1604:5550 bash
+  evostream/ems200-ubuntu1604:5550-1 bash
 ```
 
 ## Building Your Own Docker Image for EMS 2.0.0 (optional)
@@ -98,7 +99,7 @@ From your host machine, copy the license file `License.lic` to `/etc/evostreamms
 ```
 $ sudo docker cp /path/to/License.lic myems:/etc/evostreamms
 ```
-Replace `myems` with `ems5550` or whatever container name was used for running the Docker image. Use the `sudo docker ps -a` command to check the container names of running instances.
+Replace `myems` with `ems5550-1` or whatever container name was used for running the Docker image. Use the `sudo docker ps -a` command to check the container names of running instances.
 
 Inside the Docker container, start the EMS (in privileged mode):
 ```
