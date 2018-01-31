@@ -187,6 +187,21 @@ Replace "address" with the IP address of the EMS. Replace "userName" and "passwo
 
 - See the [download](https://github.com/EvoStream/evostream_addons/tree/master/crystal_samples/httpcli/download) directory for compiled binaries of httpcli.
 
+- In case you get the following error when trying to run `httpcli`:
+  ```bash
+  $ ./httpcli
+  ==>
+  ./httpcli: error while loading shared libraries: libgc.so.2: cannot open shared object file: No such file or directory
+  ```
+  you can use this procedure to fix the error:
+  ```bash
+  $ locate libgc.so
+  ==>
+  /usr/lib/x86_64-linux-gnu/libgc.so.1
+  /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3
+  $ ln -sf /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3 /usr/lib/x86_64-linux-gnu/libgc.so.2
+  ```
+
 ## Development
 
 - The source code is provided for demonstration purposes only. It can be found on GitHub:
