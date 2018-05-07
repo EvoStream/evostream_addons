@@ -4,12 +4,6 @@
   "parameters": {
     "virtualMachineName": {
       "value": "ems201vm"
-    },
-    "adminUsername": {
-      "value": "emsuser"
-    },
-    "adminPassword": {
-      "value": "emsP4$$"
     }
   }
 }

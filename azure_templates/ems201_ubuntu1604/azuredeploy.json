@@ -7,18 +7,6 @@
       "metadata": {
         "description": "Name of the Virtual Machine."
       }
-    },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "User name for the Virtual Machine."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the Virtual Machine."
-      }
     }
   },
   "variables": {
@@ -39,7 +27,9 @@
     "virtualNetworkName": "ems201vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'), '/subnets/', variables('subnetName'))]",
-    "storageAccountName": "[toLower(concat('sa', uniqueString(resourceGroup().id)))]"
+    "storageAccountName": "[toLower(concat('sa', uniqueString(resourceGroup().id)))]",
+    "adminUsername": "admin001",
+    "adminPassword": "Password_1234"
   },
   "resources": [
     {
@@ -127,8 +117,8 @@
         },
         "osProfile": {
           "computerName": "[parameters('virtualMachineName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[variables('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -174,7 +164,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('ruby initialize.rb ', parameters('adminUsername'), ' > temp.txt')]"
+          "commandToExecute": "[concat('ruby initialize.rb ', variables('adminUsername'), ' > temp.txt')]"
         }
       }
     }
