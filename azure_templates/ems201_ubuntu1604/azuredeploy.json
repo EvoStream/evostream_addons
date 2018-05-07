@@ -23,7 +23,7 @@
     "publicIPAddressName": "ems201pip",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmSize": "Standard_D1_v2",
+    "vmSize": "Standard_F1",
     "virtualNetworkName": "ems201vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'), '/subnets/', variables('subnetName'))]",
